@@ -1,0 +1,751 @@
+@import (reference) "index";
+@import (reference) "style";
+
+@skill-font-size: 14px;
+@skill-line-height: 1.4;
+@skill-lines-to-show: 1;
+
+.one-digit-padding {
+  @media @largeDesktop {
+    padding: 0.7rem 1.4rem;
+  }
+
+  @media @desktop {
+    padding: 0.5rem 1rem;
+  }
+
+  @media @common {
+    padding: 0.5rem 1rem;
+  }
+}
+
+.two-digit-padding {
+  @media @largeDesktop {
+    padding: 0.7rem 0.7rem;
+  }
+
+  @media @desktop {
+    padding: 0.5rem 0.65rem;
+  }
+
+  @media @common {
+    padding: 0.5rem 0.65rem;
+  }
+}
+
+.expand-contract {
+  cursor: pointer !important; 
+}
+
+.full-height {
+  height: 100%;
+}
+
+svg {
+  padding: 20px 10px;
+}
+
+.is-detail {
+  overflow-x: visible; 
+  background-color: transparent;
+}
+
+.not-detail {
+  overflow: auto; 
+  background-color: transparent;
+}
+
+.skill-details {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100% !important;
+  padding: 20px 30px;
+  color: white;
+  font-size: 16px;
+  /*overflow: auto;*/
+
+  .skill-detail-container {
+    overflow-y: scroll;
+    height: 100%;
+  }
+
+  .skill-name {
+    font-size: 1.5rem;
+    top: 10px;
+    .people-count {
+      font-size: 2rem;
+      border: 2px solid white;
+      border-radius: 50%;
+    }
+
+    .people-count.one-digit {
+      .one-digit-padding;
+    }
+
+    .people-count.two-digit {
+      .two-digit-padding;
+    }
+  }
+
+  .project-overview {
+    color: white;
+  }
+
+  .related-skills {
+    div {
+      margin-bottom: 0.2rem;
+    }
+    span {
+      display: inline-block;
+      border: 1px solid white;
+      padding: 0.3rem 0.8rem;
+      margin: 0.2rem;
+      cursor: pointer !important;
+    }
+  }
+
+  table.table {
+    display: table;
+    caption {
+      color: white !important;
+      font-size: 1rem;
+      padding-bottom: 1%;
+    }
+
+    th:first-child {
+      text-align: left;
+    }
+
+    th:nth-child(2) {
+      display: table-cell;
+      text-align: left;
+      border-top: 0;
+      padding-left: 50px;
+    }
+
+    th:nth-child(3) {
+      display: table-cell;
+      text-align: left;
+      border-top: 0;
+    }
+
+    th:last-child {
+      text-align: center;
+    }
+
+    th {
+      display: table-cell;
+      text-align: center;
+      border-top: 0;
+    }
+
+    tr.skill-list {
+      cursor: pointer;
+    }
+
+    td:first-child {
+      min-width: 46px;
+      text-align: left;
+
+      .profile-image {
+        display: table-cell;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+      }
+    }
+
+    td:nth-child(2) {
+      padding-left: 0px;
+      width: 18%;
+      text-align: left;
+    }
+
+    td:nth-child(3) {
+      padding-left: 50px;
+      width: 27%;
+      text-align: left;
+    }
+
+    td:nth-child(4) {
+      width: 27%;
+      text-align: left;
+    }
+
+    td:nth-child(5) {
+      width: 12%;
+      text-align: center;
+      .flag {
+        vertical-align: middle !important;
+      }
+    }
+
+    td:last-child {
+      width: 13%;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    td {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+      padding-right: 0px;
+      border-bottom: 1px solid white;
+    }
+    
+    .tooltip > .tooltip-inner {
+      white-space: nowrap;
+      max-width: 400px;
+    }
+  }
+}
+
+.bubble-legend {
+  background-color: #333b43;
+  height: 50px;
+  position: absolute;
+  top: 62px;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  border-bottom: 1px solid grey;
+  display: flex;
+  align-items:center;
+  justify-content:center;
+
+  h5 {
+    float: left;
+    margin-left: 20px;
+    width: 15%;
+  }
+
+  .category-list {
+    overflow:auto;
+    white-space: nowrap;
+    margin: 0 auto;
+    float: right;
+    width: 95%;
+    margin-right: 20px;
+
+    .category-item {
+      margin:10px;
+      display: inline-block;
+
+      span {
+        height:15px;
+        width:15px;
+        display: inline-block;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+.no-skills {
+  height: 0%;
+}
+
+.yes-skills {
+  height: 100%;
+}
+
+.map-body {
+  .skills-list-header {
+    display: flex;
+    padding: 0 20px 0 20px;
+    align-items:center;
+    border-bottom: 2px solid grey;
+
+    div:nth-child(1) {
+      width: 35%;
+    }
+
+    div:nth-child(2) {
+      //margin-left: 2%;
+      width: 60%;
+
+      @media @xsDesktop {
+        margin-left: 6.5%;
+      }
+
+      @media @windows {
+        margin-left: 5%;
+      }
+
+      @media @smallDesktop {
+        margin-left: 4%;
+      }
+
+      @media @xsDesktop {
+        margin-left: 6.5%;
+      }
+
+      @media @desktop {
+        margin-left: 3%;
+      }
+
+      @media only screen and (min-width: 1650px) and (max-width: 1919px) {
+        margin-left: 2%;
+      }
+
+      @media @largeDesktop {
+        margin-left: 0%;
+      }
+    }
+
+    div:nth-child(3) {
+      width: 15%;
+      text-align: center;
+    }
+  }
+
+  .people-list-header {
+    height: 35px;
+    display: flex;
+    padding: 0 20px 0 20px;
+    align-items:center;
+    margin: 0px 30px 0px 30px;
+    border-bottom: 1px solid grey;
+
+    div:nth-child(1) {
+      width: 40%;
+      font-weight: 700;
+    }
+
+    div:nth-child(2) {
+      width: 50%;
+      font-weight: 700;
+
+      @media @xsDesktop {
+        margin-left: 6.5%;
+      }
+
+      @media @windows {
+        margin-left: 5%;
+      }
+
+      @media @smallDesktop {
+        margin-left: 4%;
+      }
+
+      @media @xsDesktop {
+        margin-left: 6.5%;
+      }
+
+      @media @desktop {
+        margin-left: 3%;
+      }
+
+      @media only screen and (min-width: 1650px) and (max-width: 1919px) {
+        margin-left: 2%;
+      }
+
+      @media @largeDesktop {
+        margin-left: 0%;
+      }
+    }
+
+    div:nth-child(3) {
+      width: 10%;
+      text-align: center;
+      font-weight: 700;
+    }
+  }
+
+  .vAccordion--default {
+
+    v-accordion {
+      margin-top: 0;
+    }
+
+    .people-list-accordion {
+      padding: 0px 30px 0px 30px;
+    }
+
+    v-pane {
+
+      &.is-expanded {
+        /*border-bottom: 1px solid grey;*/
+        background-color: #3d434b;
+        >v-pane-header {
+          border-bottom-color: grey;
+          border: none;
+
+          .cat-header {
+            align-items: baseline;
+
+            .skill-description {
+              height: auto;
+              transition: height 1s ease
+            }
+          }
+
+          &:before {
+            transform: rotate(-135deg);
+            transition: transform top 0.5s ease;
+            top: 30px;
+          }
+        }
+      }
+
+      .person-pane-header {
+        align-items: center;
+        border-top: 1px solid grey !important;
+        border-bottom: none !important;
+        padding: 10px 10px 10px 0px !important;
+      }
+
+      v-pane-header {
+        padding: 20px;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        border-color: grey;
+        border-bottom: 1px solid grey;
+        transition: none;
+
+        .project-box {
+          width: 15px;
+          height: 15px;
+          vertical-align: middle;
+          text-align: center;
+          margin-right: 25px;
+        }
+
+        .proj-name{
+          width: 89% !important;
+        }
+
+        .proj-ave-util {
+          width: 11% !important;
+          color: #b7b7b7 !important;
+          display: flex;
+          justify-content: center;
+        }
+
+        >div {
+          width: 100%;
+          cursor: pointer !important;
+        } 
+
+        &:after {
+          left: 0;
+          background-color: transparent;
+        }
+
+        &:before {
+          left: 0;
+          background-color: transparent;
+
+          position: absolute;
+          top: 23px;
+          left: 20px;
+          width: 10px;
+          height: 10px;
+          border-right: 2px solid white;
+          border-bottom: 2px solid white;
+
+          transform: rotate(45deg);
+          transition: transform top 0.5s ease;
+        }
+
+        &:focus {
+          color: white;
+        }
+
+        &:hover {
+          color: white;
+        }
+
+        .person-header {
+          align-items: center !important;
+        }
+
+        .cat-header {
+          display: flex;
+          margin-left: 50px;
+          cursor: pointer !important;
+          div {
+            cursor: pointer !important;
+          }
+
+          .skill-description {
+            height: @skill-font-size*@skill-line-height*@skill-lines-to-show; /* Fallback for non-webkit */
+            -webkit-line-clamp: @skill-lines-to-show;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .cat-bullet {
+            height: 15px;
+            width: 15px;
+            margin-right: 10px;
+            border-radius: 50%;
+          }
+          .profile-image {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            background-position: center;
+            background-size: cover;
+          }
+          .cat-name {
+            width: 25%;
+          }
+          .cat-desc {
+            width: 60%;
+            margin-left: 50px;
+            color: lightgrey;
+          }
+          .cat-total {
+            width: 15%;
+            text-align: center;
+          }
+          .person-name {
+            width: 39%;
+            padding-left: 10px;
+            display: flex;
+            align-items: center;
+
+            span {
+              padding-left: 15px;
+            }
+          }
+          .person-role {
+            width: 50%;
+            color: #b7b7b7;
+          }
+          .person-util {
+            width: 10%;
+            color: #b7b7b7;
+            justify-content: center;
+            display: flex;
+          }
+        }
+      }
+
+      v-pane-content {
+        .vAccordion--people {
+          padding-left: 60px !important;
+        }
+
+        .vAccordion--skill {
+
+          padding-left: 50px;
+
+          v-pane {
+
+            &.is-expanded {
+
+              border-bottom: 1px solid grey;
+
+              &:last-child {
+                border-bottom: none;
+              }
+
+              >v-pane-header {
+                border-bottom-color: grey;
+                border: none;
+
+                .cat-header {
+                  align-items: baseline;
+
+                  .skill-description {
+                    height: auto;
+                    transition: height 1s ease
+                  }
+                }
+              }
+            }
+
+            &:last-child {
+              v-pane-header {
+                border-bottom: none !important;
+              }
+            }
+
+            v-pane-header {
+
+              border-color: grey;
+
+              >div {
+                cursor: pointer !important;
+              }
+
+              .cat-header {
+
+                cursor: pointer !important;
+
+                i {
+                  height: 15px;
+                  width: 15px;
+                  margin-right: 10px;
+                }
+
+                div {
+                  cursor: pointer !important;
+                }
+
+                div:nth-child(2) {
+                  width: 25%;
+                }
+                div:nth-child(3) {
+                  width: 60%;
+                  color: lightgrey;
+                  margin-left: 0;
+                }
+                div:nth-child(4) {
+                  width: 15%;
+                  text-align: center;
+                }
+
+                .skill-description {
+                  height: @skill-font-size*@skill-line-height*@skill-lines-to-show; /* Fallback for non-webkit */
+                  -webkit-line-clamp: @skill-lines-to-show;
+                  -webkit-box-orient: vertical;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+              }
+            }
+
+            v-pane-content {
+              top: 2px;
+
+              .people-list-table {
+                .people-list-thread {
+                  th {
+                    border-bottom: 1px solid grey !important;
+                    border-top: 1px solid grey !important;
+                  }
+                }
+                th:nth-child(1) {
+                  cursor: pointer;
+                  width: 31%;
+                }
+                th:nth-child(2) {
+                  cursor: pointer;
+                  width: 54%;
+                }
+                th:nth-child(3) {
+                  cursor: pointer;
+                  width: 15%;
+                  text-align: center;
+                }
+                td:nth-child(1) {
+                  color: #b7b7b7 !important;
+                }
+                td:nth-child(2) {
+                  color: #b7b7b7 !important;
+                }
+                td:nth-child(3) {
+                  color: #b7b7b7 !important;
+                }
+              }
+
+              table {
+                float: right;
+                width: 91%;
+
+                >thead {
+                  >tr {
+                    >th {
+                      border-color: grey !important;
+                    }
+                  }
+                }
+                thead {
+                  border-color: #b7b7b7;
+
+                  .ion-android-arrow-dropup, .ion-android-arrow-dropdown {
+                      margin-left: 5px;
+                      position: absolute;
+                  }
+
+                  th:nth-child(1) {
+                    width: 35%;
+                  }
+                  th:nth-child(2) {
+                    width: 40%;
+                  }
+                  th:nth-child(3) {
+                    width: 10%;
+                    text-align: center;
+                  }
+                  th:nth-child(4) {
+                    width: 10%;
+                    text-align: center;
+                  }
+                }
+
+                tbody {
+                  tr {
+
+                    cursor: pointer !important;
+
+                    td {
+
+                      border: none !important;
+                      vertical-align: middle !important;
+                      cursor: pointer !important;
+
+                      div.profile-image {
+                        height: 40px;
+                        width: 40px;
+                        border-radius: 50%;
+                        cursor: pointer !important;
+                      }
+                    }
+
+                    td:nth-child(3) {
+                      color: lightgrey;
+                      width: 40%;
+                      div {
+                        height: @skill-font-size*@skill-line-height*@skill-lines-to-show; /* Fallback for non-webkit */
+                        -webkit-line-clamp: @skill-lines-to-show;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        cursor: pointer !important;
+                      }
+                    }
+                    td:nth-child(4) {
+                      text-align: center;
+                      span {
+                        cursor: pointer !important;
+                      }
+                    }
+                    td:nth-child(5) {
+                      text-align: center;
+                      pointer-events: none !important;
+                      
+                      span {
+                        white-space: nowrap;
+                        cursor: pointer !important;
+                      }
+                    
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/*the following css styles reflect the class names from BubbleChartDirective.js*/
+.cell {
+  cursor: pointer;
+}
+

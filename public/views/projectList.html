@@ -1,0 +1,122 @@
+<div class="panel map-panel">
+    <div class="spinner-wrapper" ng-show="projectListLoading"></div>
+    <div class="clear-loading spinner" ng-show="projectListLoading">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="panel-heading map-header">
+
+        <div class="panel-title people-panel-title" ng-if="opHistory.length > 0">
+            <span class="glyphicon glyphicon-menu-left back-arrow" go-back></span>
+            <span class="back-msg" go-back>
+                {{back}}
+            </span>
+            <span class="people-name">|</span>
+            <span>
+                {{currentView.name}}
+            </span>
+        </div>
+        <div class="panel-title people-panel-title" ng-if="opHistory.length === 0">
+            <span>
+                {{currentView.name}}
+            </span>
+        </div>
+        <div class="icon-wrapper col-md-7">
+            <p class="control-label filter-label" for="filterRange">Filter:</p>
+            <div ng-if="projects.length > 0" style="float: right;">
+                <div class="filter-projects-td">
+                    <div class="item item-input">
+                        <input class="filter-search" id="filterRange" type="text" ng-model="selectedRange.name"
+                               ng-click="getFilters()" readonly click-off>
+                        <i class="icon ion-arrow-down-b placeholder-icon"></i>
+                    </div>
+
+                    <div class="search-filter-result angular-animate filter-result search-result-range-item">
+                        <ul class="container-fluid" style="width:100%;">
+                            <li ng-repeat="f in filters" id="treemap-range-filter" ng-click="changeFilter(f.value)">
+                                <span class="filter-name">{{f.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <span class="info-btn ion-stats-bars" ng-click="goToTreeMap()"></span>
+            <a ng-class="{'ion-android-expand': !isFullSize, 'ion-android-contract': isFullSize}" aria-hidden="true"
+               ng-click="setFullSize()"></a>
+        </div>
+    </div>
+
+    <!--Project List-->
+    <div class="panel-body map-body">
+        <div ng-if="projects.length == 0" class="no-records">
+            No Projects
+        </div>
+        <div ng-if="projects.length > 0">
+            <div class="treemap-list angular-animate animate-show-hide" ng-if="dataLoaded">
+                <div class="section-filter-group col-md-5 pull-right">
+                    <div class="item-description col-md-5">
+                        <p for="statusSelect">Filter by Status:</p>
+                    </div>
+                    <div class="item-input-group col-md-7">
+                        <div class="item-input">
+                            <input id="statusSelect" class="status-filter" type="text" ng-model="selectedStatus" ng-click="showStatusFilter()" readonly click-off>
+                            <i class="icon ion-arrow-down-b placeholder-icon ion-icon"></i>
+                        </div>
+                        <!-- role dropdown -->
+                        <div class="people-panel-list status-filter-list angular-animate">
+                            <ul>
+                                <li ng-repeat="s in status" ng-click="selectStatusFilter(s.name)">
+                                    {{s.name}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                    <!-- <th></th> -->
+                    <th ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                        Project Name
+                        <span ng-show="sortType == 'name' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                        <span ng-show="sortType == 'name' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                    </th>
+                    <th ng-click="sortType = 'status'; sortReverse = !sortReverse">
+                        <span>Status</span>
+                        <span ng-show="sortType == 'status' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                        <span ng-show="sortType == 'status' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                    </th>
+                    <th ng-click="sortType = 'total_hours'; sortReverse = !sortReverse">
+                        Utilization
+                        <span ng-show="sortType == 'total_hours' && !sortReverse" class="ion-android-arrow-dropdown"></span>
+                        <span ng-show="sortType == 'total_hours' && sortReverse" class="ion-android-arrow-dropup"></span>
+                    </th>
+                    <th ng-click="sortType = 'people_count'; sortReverse = !sortReverse">
+                        Resources
+                        <span ng-show="sortType == 'people_count' && !sortReverse" class="ion-android-arrow-dropdown"></span>
+                        <span ng-show="sortType == 'people_count' && sortReverse" class="ion-android-arrow-dropup"></span>
+                    </th>
+                    </thead>
+                    <tbody>
+                        <tr class="proj-list-tr" ng-repeat="p in projects | orderBy:sortType:!sortReverse | filter:statusFilter"
+                            ng-click="goToProjectDetail(p.proj_id)">
+                            <!-- <td class="project-box"><div ng-style="setColor(p.proj_id)"></div></td> -->
+                            <td>{{p.name}}</td>
+                            <td class="project-list-td">
+                                    <span class="project-list-status">
+                                        <i class="ion-record" color="white" ng-if="p.status=='Active New Development'"/>
+                                        <i class="ion-contrast" color="white" ng-if="p.status=='Active Ongoing Support'"/>
+                                        <i class="ion-android-radio-button-off" color="white"
+                                           ng-if="p.status=='Lifecycle Management'"/>
+                                    </span>
+                                {{p.status}}
+                            </td>
+                            <td>{{p.total_hours}}hrs</td>
+                            <td>{{p.people_count}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

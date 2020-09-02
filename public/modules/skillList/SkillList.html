@@ -1,0 +1,112 @@
+<div class="panel map-panel">
+    <div class="spinner-wrapper" ng-show="vm.isLoading"></div>
+    <div class="clear-loading spinner" ng-show="vm.isLoading">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="panel-heading map-header">
+        <div class="panel-title people-panel-title" ng-if="opHistory.length > 0">
+            <span class="glyphicon glyphicon-menu-left back-arrow" go-back></span>
+            <span class="back-msg" go-back>
+              {{vm.back}}
+            </span>
+            <span class="people-name">|</span>
+            Skills List
+        </div>
+        <div class="panel-title people-panel-title" ng-if="opHistory.length === 0">
+            Skills List
+        </div>
+        <div class="tab-wrapper">
+            <span class="info-btn ion-stats-bars" ng-click="vm.switchToBubbleChart()"></span>
+            <a class="expand-contract"
+               ng-class="{'ion-android-expand': !isFullSize, 'ion-android-contract': isFullSize}"
+               aria-hidden="true"
+               ng-click="setFullSize()"></a>
+        </div>
+    </div>
+    <div ng-if="!vm.isLoading && vm.skillsList.length === 0" class="no-records">
+        No Skills
+    </div>
+    
+    <!-- skills list view -->
+    <div class="panel-body map-body skills-list-body" 
+         style="overflow-y: scroll;padding:30px;">
+      <div style="overflow-x: visible;">
+          <div class="skills-list-header">
+              <div>CATEGORY</div>
+              <div>DESCRIPTION</div>
+              <div><i class="ion-person-stalker" style="font-size: 24px;"></i></div>
+          </div>
+          <!-- add `multiple` attribute to allow multiple sections to open at once -->
+          <v-accordion class="vAccordion--default" multiple control="vm.accordion">
+              <!-- add expanded attribute to open the section -->
+              <v-pane ng-repeat="(cat_key, cat_value) in vm.skillsList">
+                  <v-pane-header>
+                      <div class="cat-header">
+                          <div class="cat-bullet" ng-style="vm.setColor(cat_key)"></div>
+                          <div class="cat-name">{{cat_value.name}}</div>
+                          <div class="skill-description cat-desc">{{cat_value.description}}</div>
+                          <div class="cat-total">{{cat_value.total_count}}</div>
+                      </div>
+                  </v-pane-header>
+
+                  <v-pane-content class="v-content">
+                      <v-accordion class="vAccordion--skill" ng-if="cat_value.skills" multiple control="innerAccordion">
+                          <v-pane ng-repeat="(skill_key, skill_value) in cat_value.skills">
+                              <v-pane-header  ng-click="vm.getSkillUsers(skill_key, cat_key)">
+                                  <div class="cat-header">
+                                      <i ng-class="{'ion-arrow-graph-up-right' : skill_value.trending}"></i>
+                                      <div>{{ skill_value.name }}</div>
+                                      <div class="skill-description">{{skill_value.description }}</div>
+                                      <div>{{ skill_value.count }}</div>
+                                  </div>
+                              </v-pane-header>
+                              <v-pane-content class="v-content">
+                                  <div ng-if="skill_value.count == 0" style="text-align: center;">
+                                      No People know this skill.
+                                  </div>
+                                  <div style="overflow-y: scroll;">
+                                      <table class="table" ng-if="skill_value.count > 0">
+                                          <thead>
+                                              <th colspan="2" ng-click="sortType = 'lname'; sortReverse = !sortReverse">
+                                                  NAME
+                                                  <span ng-show="sortType == 'lname' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                                                  <span ng-show="sortType == 'lname' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                                              </th>
+                                              <th ng-click="sortType = 'job_title'; sortReverse = !sortReverse">
+                                                  ROLE
+                                                  <span ng-show="sortType == 'job_title' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                                                  <span ng-show="sortType == 'job_title' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                                              </th>
+                                              <th ng-click="sortType = 'cc'; sortReverse = !sortReverse">
+                                                  GEO
+                                                  <span ng-show="sortType == 'cc' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                                                  <span ng-show="sortType == 'cc' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                                              </th>
+                                              <th ng-click="sortType = 'skills.proficiency[0].rating'; sortReverse = !sortReverse">
+                                                  PROFICIENCY
+                                                  <span ng-show="sortType == 'skills.proficiency[0].rating' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                                                  <span ng-show="sortType == 'skills.proficiency[0].rating' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                                              </th>
+                                          </thead>
+                                          <tbody>
+                                              <tr ng-repeat="p in skill_value.people | orderBy:sortType:!sortReverse " ui-sref="home.people.profile({userID: p._id})">
+                                                  <td><div class="profile-image" ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/'+ p._id + '.jpg?s=40)'}"></div></td>
+                                                  <td>{{ p.fname }} {{ p.lname }}</td>
+                                                  <td><div class="skill-description">{{ p.job_title }}</div></td>
+                                                  <td><span style="width: 24px; height: 24px" class="flag-icon" ng-class="'flag-icon-' + p.cc"></span></td>
+                                                  <td><opin-custom-rating ng-model="p.skills.proficiency[0].rating" readonly="true" style="font-size: 16px;"></opin-custom-rating></td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </v-pane-content>
+                          </v-pane>
+                      </v-accordion>
+                  </v-pane-content>
+              </v-pane>
+          </v-accordion>
+        </div>
+    </div>
+</div>

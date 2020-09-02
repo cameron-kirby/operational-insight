@@ -1,0 +1,22 @@
+{
+    "blueMail" : {
+      "username": "b4921249-6284-40e2-89a0-6cf945ed58b8",
+      "password": "0f2deaf1-985c-41ea-899b-c206cd740034",
+      "emailUrl": "https://bluemail.w3ibm.mybluemix.net/rest/v2/emails"
+    },
+    "ldapSettings": {
+      "scheme": "ldap",
+      "port": 389
+    },
+    "listening_port": {
+      "localhost": 3000
+    },
+    "domain": {
+      "base_url": "http://localhost:3000",
+      "url": "http://localhost:3000/rest",
+      "localhost": true
+    },
+    "ipt":{
+      "url": "https://cfweb.rochny.ibm.com/ptd/projmain?ptdpage=detail&applid="
+    }
+}

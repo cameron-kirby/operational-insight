@@ -1,0 +1,171 @@
+body {
+    margin: 0 auto;
+    padding: 0;
+}
+
+.login {
+
+    background: url("../../images/keyboard.jpg") no-repeat center fixed;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+.form-login {
+    background-color: rgb(48,53,60);
+    z-index: 1;
+    position: relative;
+    opacity: .95;
+    margin: auto;
+    width: 100%;
+    padding-bottom: 0;
+    top: 50%;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    box-shadow: 0px 3px 24px 0px rgba(0, 0, 1, 0.44);
+}
+
+.form-login .form-login-heading {
+    z-index: 2;
+    color: #FFFFFF;
+    font-size: 2.4vmin;
+    text-align: center;
+    font-weight: lighter;
+    vertical-align: middle;
+    padding: 10% 5% 10% 5%;
+    margin: 0;
+}
+
+.form-login .form-login-heading .logo-image {
+    width: 100%;
+    height: 100%;
+}
+
+.form-login .form-control {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-width: 0;
+}
+
+
+.form-login input {
+    height: 30px;
+    font-family: "Helvetica Neue Regular", Helvetica, Arial, sans-serif;
+    font-size: 8pt;
+    color: white;
+    background-color: rgb(89, 97, 108);
+    line-height: 1;
+}
+
+.form-login .inputEmail {
+    display: inline
+}
+.form-login .inputPassword {
+    display: inline
+}
+.form-login .btn-login {
+    background-color: rgb(27, 172, 114);
+    font-family: "Helvetica Neue Medium", Helvetica, Arial, sans-serif;
+    font-size: 14pt;
+    color: white !important;
+    vertical-align: bottom;
+    border-radius: 0px;
+
+}
+
+.form-entry {
+    padding: 0 15% 0 15%;
+
+    border-radius: 0px;
+}
+
+.form-entry .intranetIDBox {
+    border-radius: 0px;
+    padding: 5px;
+
+}
+
+.form-entry .passwordBox {
+    margin-top: 5px;
+    border-radius: 0px;
+    padding: 5px;
+}
+
+.form-entry .disclaimer {
+    color: rgb(149, 149, 149);
+    margin-bottom: 15px;
+    margin-top: 25px;
+    font-size: 1.3vmin;
+    line-height: 1.4;
+    text-align: justify;
+    padding: 5px;
+
+}
+
+.form-control::-moz-placeholder {
+    color: white;
+    opacity: 1;
+    font-weight: lighter;
+}
+
+.form-control:-ms-input-placeholder {
+    color: white;
+    font-weight: lighter;
+}
+
+.form-control::-webkit-input-placeholder {
+    color: white;
+    font-weight: lighter;
+
+}
+
+.sr-only {
+    border-radius: 0px;
+}
+
+.form-control {
+    border-radius: 0px;
+}
+
+.footer {
+    color: white;
+    text-align: center;
+    font-size: 250%;
+    margin-bottom: 5px;
+}
+
+.login .row {
+
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.error{
+    color: #fb6e5f;
+    font-size: 1.3vmin;
+    padding: 5px;
+    text-align: justify;
+    font-style: italic;
+
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-box-shadow: 0 0 0px 1000px #59616C inset;
+    -webkit-text-fill-color: #FFF !important;
+
+}

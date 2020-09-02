@@ -1,0 +1,53 @@
+@import (reference) "../../style.less";
+
+@verifyCheck: #04ab70;
+
+.verify-message-background {
+  animation: background-fade 1s;
+  animation-delay: 2s;
+  animation-fill-mode: forwards;
+  background-color: #000000;
+  bottom: 0px;
+  left: 0px;
+  opacity: 0.75;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  z-index: 100;
+  -webkit-animation: background-fade 1s; /* Chrome, Safari, Opera */
+  -webkit-animation-delay: 2s;
+  -webkit-animation-fill-mode: forwards;
+
+  .center-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .circle {
+      background-color: rgba(255, 255, 255, 0);
+      border-radius: 50%;
+      border: 3px solid @verifyCheck;
+      height: 66px;
+      margin: auto;
+      width: 66px;
+
+      .checkmark {
+        height: 66px;
+        width: 66px;
+      }
+    }
+  }
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes background-fade {
+    0%   {opacity: 0.75;}
+    100% {opacity: 0;}
+}
+
+/* Standard syntax */
+@keyframes background-fade {
+    0%   {opacity: 0.75;}
+    100% {opacity: 0;}
+}

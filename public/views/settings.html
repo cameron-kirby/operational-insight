@@ -1,0 +1,690 @@
+<div class="panel map-panel">
+    <div class="panel-heading map-header">
+        <div class="panel-title people-panel-title" ng-if="opHistory.length > 0">
+            <span class="glyphicon glyphicon-menu-left back-arrow" go-back></span>
+            <span class="back-msg" go-back>
+              {{vmSettings.back}}
+            </span>
+            <span class="people-name">|</span>
+            <span>
+              {{currentView.name}}
+            </span>
+        </div>
+        <div class="panel-title people-panel-title" ng-if="opHistory.length === 0">
+            <span>
+              {{currentView.name}}
+            </span>
+        </div>
+    </div>
+
+    <!--Settings View-->
+    <div class="panel-body map-body settings-view">
+        <div class="row settings-panel">
+            <!-- skills panel -->
+            <div class="panel-item" ng-class="vmSettings.isRealAdmin ? 'col-md-4' : 'col-md-6'">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="panel-title">Skills</div>
+                        <span ng-if="!vmSettings.isAddCategory" class="ion-plus ion-icon" ng-click="vmSettings.toggleAddCategory()"></span>
+
+                        <div ng-if="vmSettings.isAddCategory" class="icon-circle ion-icon" ng-click="vmSettings.toggleAddCategory()">
+                            <span class="ion-plus"></span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <!-- add category section -->
+                        <div id="skills-scroll-area">
+                            <div class="add-category-section category-fields">
+                                <div style="padding-left: 15px;">
+                                    <p class="error-text" ng-if="vmSettings.validateCategory"><i>Category already exists in Operational
+                                        Insight</i></p>
+                                </div>
+                                <div class="section-input-group">
+                                    <div class="item-description">
+                                        <p>Category</p>
+                                    </div>
+                                    <div class="item-input item-input-category"
+                                         ng-class="{'input-error': vmSettings.validateCategory}">
+                                        <input class="add-panel-item" type="text" ng-model="vmSettings.addCategoryName"
+                                               maxlength="200">
+                                    </div>
+                                </div>
+                                <div class="section-input-group input-description">
+                                    <div class="item-description">
+                                        <p>Description</p>
+                                    </div>
+                                    <div class="item-input item-input-category">
+                                    <textarea class="add-panel-item" type="text" ng-model="vmSettings.categoryDesc"
+                                              maxlength="750"></textarea>
+                                    </div>
+                                </div>
+                                <div class="section-input-group section-btn">
+                                    <button class="btn btn-cancel" type="button" ng-click="vmSettings.cancelSkillCategory()">
+                                        Cancel
+                                    </button>
+                                    <button class="btn btn-save" type="button"
+                                            ng-click="vmSettings.addSkillCategory(vmSettings.addCategoryName, vmSettings.categoryDesc)"
+                                            ng-disabled="!vmSettings.canAddCategory">
+                                        Create
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- category list -->
+                            <div class="cancelCat" id="categoryList">
+                                <div class="category-row" ng-class="category.isExpand ? 'add-skill-expand' : 'add-skills'"
+                                     ng-if="vmSettings.editSkillBufferAll.length > 0" ng-repeat="category in vmSettings.editSkillBufferAll">
+                                    <div class="category-container"
+                                         ng-class="{'bar-slide-left-out': category.category_delete}">
+                                        <div ng-if="!category.isEdit" ng-init="category.isEdit=false">
+                                            <div class="skill-col-1">
+                                                <p class="glyphicon glyphicon-menu-down" ng-if="!category.isExpand"
+                                                   ng-click="vmSettings.expandCategory($index, category._id)"></p>
+
+                                                <p class="glyphicon glyphicon-menu-up" ng-if="category.isExpand"
+                                                   ng-click="vmSettings.expandCategory($index, category._id)"></p>
+                                            </div>
+                                            <div class="skill-col-2">
+                                                <p class="ion-record skill-bullet"
+                                                   ng-style="{'color': vmSettings.categoryColorMapping[category.name]}"></p>
+                                            </div>
+                                            <div class="skill-col-3">
+                                                <p class="categoryName">{{category.name}}</p>
+
+                                                <p class="categoryDesc">{{category.description}}</p>
+                                            </div>
+                                            <div class="skill-col-4">
+                                                <p class="ion-android-more-vertical ion-icon"
+                                                   ng-click="vmSettings.showMenu(category._id)"
+                                                   click-off></p>
+
+                                                <div class="category-menu {{category._id}}">
+                                                    <div class="category-menu-options angular-animate">
+                                                        <ul class="search-result-users container-fluid text-left">
+                                                            <li ng-repeat="u in vmSettings.categoryMenu" class="category-menu-item"
+                                                                ng-click="vmSettings.doOption(category, u.name, $parent.$index)">
+                                                                {{u.name}}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- editing category -->
+                                        <div class="edit-category-{{category._id}} category-fields edit-category-fields">
+                                            <div class="section-input-group edit-section-input-group">
+                                                <div class="item-description">
+                                                    <p>Category</p>
+                                                </div>
+                                                <div class="item-input item-input-category">
+                                                    <input class="add-panel-item" type="text" ng-model="category.name"
+                                                           maxlength="200">
+                                                </div>
+                                            </div>
+                                            <div class="section-input-group input-description edit-section-input-group">
+                                                <div class="item-description">
+                                                    <p>Description</p>
+                                                </div>
+                                                <div class="item-input item-input-category">
+                                            <textarea class="add-panel-item" type="text" ng-model="category.description"
+                                                      maxlength="750"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="section-input-group section-btn edit-section-input-group">
+                                                <button class="btn btn-cancel" type="button"
+                                                        ng-click="vmSettings.cancelEditCategory(category, $index)">
+                                                    Cancel
+                                                </button>
+                                                <button class="btn btn-save" type="button"
+                                                        ng-click="vmSettings.saveEditCategory(category, $index)">
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- skill list -->
+                                        <div class="add-skill-section add-skill-{{category._id}}">
+                                            <!-- list of skills under expanded category -->
+                                            <div id="{{skill._id}}" ng-if="category.isExpand" class="skill-list" ng-repeat="skill in category.skills" ng-init="skill.isEditSkill=false; skill.isEdited=false" ng-class="{'bar-skill-slide-left-out': skill.skill_delete}">
+                                                <!-- skill block -->
+                                                <div class="skill-row" ng-if="!skill.isEditSkill">
+                                                    <span class="ion-arrow-graph-up-right" ng-if="skill.trending"></span>
+
+                                                    <p class="skill-name-list"
+                                                       ng-class="{'skill-name-place-holder': !skill.trending}">
+                                                        {{skill.name}}</p>
+                                            <span class="ion-close-round ion-icon list-options"
+                                                  ng-click="vmSettings.deleteSkillConfirm(skill._id, category._id, $parent.$parent.$parent.$index, $index)"></span>
+                                            <span class="ion-edit ion-icon list-options"
+                                                  ng-click="vmSettings.toggleEditSkill(skill, $index, $parent.$parent.$parent.$index)"></span>
+                                                </div>
+                                                <!-- editing skill -->
+                                                <div ng-if="skill.isEditSkill">
+                                                    <div class="section-input-group">
+                                                        <div class="item-description">
+                                                            <p>Skill</p>
+                                                        </div>
+                                                        <div class="item-input item-input-category">
+                                                            <input class="add-panel-item" type="text" ng-model="skill.name"
+                                                                   maxlength="200">
+                                                        </div>
+                                                    </div>
+                                                    <div class="section-input-group input-description">
+                                                        <div class="item-description">
+                                                            <p>Description</p>
+                                                        </div>
+                                                        <div class="item-input item-input-category">
+                                                    <textarea class="add-panel-item" type="text"
+                                                              ng-model="skill.description" maxlength="750"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="section-input-group trend-group">
+                                                        <div class="item-description trending-group">
+                                                            <p>Trending?</p>
+                                                        </div>
+                                                        <div class="option-trending"
+                                                             ng-class="skill.trending ? 'trend-true' : 'trend-false'">
+                                                            <input type="checkbox" value="1"
+                                                                   id="{{skill._id}}-skill.isTrending"
+                                                                   ng-model="skill.trending"/>
+                                                            <label for="{{skill._id}}-skill.isTrending"></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="section-input-group add-skill-button">
+                                                        <button class="btn btn-cancel" type="button"
+                                                                ng-click="vmSettings.cancelEditSkill($parent.$parent.$parent.$index, $index)">
+                                                            Cancel
+                                                        </button>
+                                                        <button class="btn btn-save" type="button" ng-disabled="skill.isEdited"
+                                                                ng-click="vmSettings.editSkill(category._id, $parent.$parent.$parent.$index, $index)">
+                                                            Save
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="add-a-skill" ng-if="!category.isAddSkill"
+                                                 ng-click="vmSettings.toggleisAddSkill($index)">
+                                                <span class="ion-plus"></span>
+                                                <span style="cursor: pointer !important;">Add a Skill</span>
+                                            </div>
+                                            <!-- add category skill -->
+                                            <div ng-if="category.isAddSkill">
+                                                <div class="section-input-group">
+                                                    <div class="item-description">
+                                                        <p>Skill</p>
+                                                    </div>
+                                                    <div class="item-input item-input-category">
+                                                        <input class="add-panel-item" type="text"
+                                                               ng-model="category.addSkillName" maxlength="200"
+                                                               ng-change="vmSettings.validateNewSkill($parent.$index)">
+                                                    </div>
+                                                </div>
+                                                <div class="section-input-group">
+                                                    <div class="item-description">
+                                                        <p>Description</p>
+                                                    </div>
+                                                    <div class="item-input item-input-category">
+                                                <textarea class="add-panel-item" type="text"
+                                                          ng-model="category.addSkillDesc" maxlength="750"
+                                                          ng-change="vmSettings.validateNewSkill($parent.$index)"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="section-input-group trend-group">
+                                                    <div class="item-description trending-group">
+                                                        <p>Trending?</p>
+                                                    </div>
+                                                    <div class="option-trending"
+                                                         ng-class="category.addSkillTrending ? 'trend-true' : 'trend-false'">
+                                                        <input type="checkbox" value="1"
+                                                               id="{{category._id}}-category.addSkillTrending"
+                                                               ng-model="category.addSkillTrending"
+                                                               ng-init="category.addSkillTrending=false" name=""/>
+                                                        <label for="{{category._id}}-category.addSkillTrending"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="section-input-group add-skill-button">
+                                                    <button class="btn btn-cancel" type="button"
+                                                            ng-click="vmSettings.cancelAddSkill($parent.$index, $index)">
+                                                        Cancel
+                                                    </button>
+                                                    <button class="btn btn-save" type="button"
+                                                            ng-click="vmSettings.addSkill(category, $parent.$index)"
+                                                            ng-disabled="!category.addSkillValidate">
+                                                        Add
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="vmSettings.editSkillBufferAll.length == 0" class="no-records">
+                                No Skills
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- projects panel -->
+            <div class="col-md-4 panel-item" ng-if="vmSettings.isRealAdmin">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="panel-title">Projects</div>
+                    <span ng-if="!vmSettings.isAddProjects" class="ion-plus ion-icon"
+                          ng-click="vmSettings.toggleAddProjectAttribute()"></span>
+
+                        <div ng-if="vmSettings.isAddProjects" class="icon-circle ion-icon" ng-click="vmSettings.toggleAddProjectAttribute()">
+                            <span class="ion-plus"></span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-wrapper">
+                            <div class="segment-control">
+                                <div class="btn-group btn-group-justified settings-panel-selection">
+                                    <a class="btn" ng-class="{'active': vmSettings.projectsTab=='status'}"
+                                       ng-click="vmSettings.projectsToggle('status')">Status</a>
+                                    <a class="btn" ng-class="{'active': vmSettings.projectsTab=='process'}"
+                                       ng-click="vmSettings.projectsToggle('process')">Process</a>
+                                    <a class="btn" ng-class="{'active': vmSettings.projectsTab=='geo'}" ng-click="vmSettings.projectsToggle('geo')">Geo</a>
+                                    <a class="btn" ng-class="{'active': vmSettings.projectsTab=='role'}" ng-click="vmSettings.projectsToggle('role')">Role</a>
+                                </div>
+                            </div>
+
+                            <div class="scrollable-area" id="projects-scroll-area">
+                                <!-- add project attribute -->
+                                <div class="add-projects-section category-fields project-fields">
+                                    <p class="error-text" ng-if="vmSettings.validateProjAttr"><i>Project {{vmSettings.projectsTab}} already exists in
+                                        Operational Insight</i></p>
+
+                                    <div class="section-input-group projects-input-group">
+                                        <div class="item-description">
+                                            <p>Name</p>
+                                        </div>
+                                        <div class="item-input item-input-project" ng-class="{'input-error': vmSettings.validateProjAttr}">
+                                            <input class="add-panel-item" type="text" ng-model="vmSettings.addProjAttrs.name"
+                                                   maxlength="200">
+                                        </div>
+                                    </div>
+                                    <div class="section-input-group projects-input-group  input-description">
+                                        <div class="item-description">
+                                            <p>Description</p>
+                                        </div>
+                                        <div class="item-input item-input-project">
+                                  <textarea class="add-panel-item" type="text" ng-model="vmSettings.addProjAttrs.description"
+                                            maxlength="750"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="section-input-group section-btn projects-input-group projects-input-button">
+                                        <button class="btn btn-cancel" type="button" ng-click="vmSettings.cancelProjAttr()">
+                                            Cancel
+                                        </button>
+                                        <button class="btn btn-save" type="button" ng-click="vmSettings.addProjAttr(vmSettings.addProjAttrs)"
+                                                ng-disabled="!vmSettings.canAddProjectAttr">
+                                            Create
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- project attribute list -->
+                                <div id="attributeList">
+                                    <div ng-if="vmSettings.editProjectsBufferAll.length > 0" class="category-row skill-list project-list"
+                                         ng-repeat="projAttrs in vmSettings.editProjectsBufferAll"
+                                         ng-class="projAttrs.isEditProjAttr ? 'edit-projAttrs-expand' : 'edit-projAttrs'">
+                                        <div class="proj-attr-container" ng-class="{'fade-out': projAttrs.projAttrs_delete}">
+                                            <!-- editing project attribute block -->
+                                            <div ng-if="!projAttrs.isEditProjAttr" ng-init="projAttrs.isEditProjAttr=false">
+                                                <p>{{projAttrs.name}}</p>
+                                    <span class="ion-close-round ion-icon list-options"
+                                          ng-click="vmSettings.deleteProjAttrConfirm(projAttrs._id, $index)"></span>
+                                    <span class="ion-edit ion-icon list-options"
+                                          ng-click="vmSettings.toggleEditProjAttr(projAttrs, $index)"></span>
+                                            </div>
+                                            <div id="edit-projects-{{projAttrs._id}}" class="project-fields edit-project-field">
+                                                <div class="section-input-group projects-input-group">
+                                                    <div class="item-description">
+                                                        <p>Name</p>
+                                                    </div>
+                                                    <div class="item-input item-input-project">
+                                                        <input class="add-panel-item" type="text" ng-model="projAttrs.name"
+                                                               maxlength="200">
+                                                    </div>
+                                                </div>
+                                                <div class="section-input-group projects-input-group  input-description">
+                                                    <div class="item-description">
+                                                        <p>Description</p>
+                                                    </div>
+                                                    <div class="item-input item-input-project">
+                                            <textarea class="add-panel-item" type="text"
+                                                      ng-model="projAttrs.description" maxlength="750"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="section-input-group section-btn projects-input-group">
+                                                    <button class="btn btn-cancel" type="button"
+                                                            ng-click="vmSettings.cancelEditProjAttr(projAttrs, $index)">
+                                                        Cancel
+                                                    </button>
+                                                    <button class="btn btn-save" type="button"
+                                                            ng-click="vmSettings.saveEditProjAttr(projAttrs, $index)">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="vmSettings.editProjectsBufferAll.length == 0" class="no-records with-btn-grp">
+                                        No Project Attributes
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- people panel -->
+            <div class="panel-item" ng-class="vmSettings.isRealAdmin ? 'col-md-4' : 'col-md-6'">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="panel-title">People</div>
+                        <div class="header-icon-wrapper">
+                            <div style="overflow: hidden;">
+                                <div class="settings-search-item" ng-class="{'people-search-slide-in': vmSettings.searchPeople}">
+                                    <span class="search ion-search" aria-hidden="true" ng-click="vmSettings.clickSearchPeople()"></span>
+                                    <input id="search-people-list" class="search-input angular-animate" ng-class="{'people-search-slide-in--input': vmSettings.searchPeople}" type="text" name="search-terms" placeholder="Search..." ng-model="vmSettings.peopleFilter">
+                                </div>
+                            </div>
+                            <span ng-if="!vmSettings.isAddPeople" class="ion-plus ion-icon people-search-plus" ng-click="vmSettings.toggleAddPeople()"></span>
+                            <div ng-if="vmSettings.isAddPeople" class="icon-circle ion-icon people-search-circle" ng-click="vmSettings.toggleAddPeople()">
+                                <span class="ion-plus"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-people">
+                        <div class="panel-wrapper">
+                            <div class="segment-control">
+                                <div class="btn-group btn-group-justified settings-panel-selection">
+                                    <a id="user" class="btn" ng-class="{'active': vmSettings.peopleTab == 'User'}"
+                                       ng-click="vmSettings.getUsersScope('User')">Users</a>
+                                    <a id="viewers" class="btn" ng-class="{'active': vmSettings.peopleTab == 'Viewer'}"
+                                       ng-click="vmSettings.getUsersScope('Viewer')">Viewers</a>
+                                    <a id="admin" class="btn" ng-class="{'active': vmSettings.peopleTab == 'Admin'}"
+                                       ng-click="vmSettings.getUsersScope('Admin')">Admin</a>
+                                </div>
+                            </div>
+                            <!-- add person to operational-insight -->
+                            <div class="scrollable-area" id="people-scroll-area" infinite-scroll="vmSettings.loadMore(vmSettings.peopleTab)">
+                                <div class="add-people-section category-fields people-fields">
+                                    <p class="error-text" ng-if="vmSettings.validatePerson === false"><i>Person already exists in
+                                        Operational Insight</i></p>
+
+                                    <div class="section-input-group people-input-group">
+                                        <div class="item-description">
+                                            <p>Person</p>
+                                        </div>
+                                        <div class="item-input-group">
+                                            <div class="item-input" ng-class="{'input-error': vmSettings.validatePerson === false}"
+                                                 click-off>
+                                        <span class="user-input" ng-if="vmSettings.selectPersonSelected"><img
+                                                ng-src="https://images.w3ibm.mybluemix.net/image/{{vmSettings.personToAdd.email}}?s=115"></span>
+                                                <input ng-class="{'person-select': vmSettings.selectPersonSelected}"
+                                                       class="people-search-people" type="text" placeholder="Find a person"
+                                                       ng-model="vmSettings.filterPeople" ng-change="vmSettings.showSearchResult()"
+                                                       ng-click="vmSettings.changeSelectPerson()">
+                                                <i class="icon ion-search placeholder-icon ion-icon"></i>
+                                            </div>
+                                            <!-- search people result -->
+                                            <div class="people-panel-list people-search-result angular-animate">
+                                                <ul>
+                                                    <li ng-repeat="u in vmSettings.filteredPeopleRole" ng-click="vmSettings.selectPerson(u)">
+                                                <span class="user-list"><img
+                                                        ng-src="https://images.w3ibm.mybluemix.net/image/{{u.email}}?s=115"></span>
+                                                        {{u.name}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="section-input-group people-input-group">
+                                        <div class="item-description">
+                                            <p>Role</p>
+                                        </div>
+                                        <div class="item-input-group">
+                                            <div class="item-input project-input">
+                                                <input class="people-search-people people-drop" type="text"
+                                                       ng-model="vmSettings.selectRole" ng-click="vmSettings.showRoles()" readonly click-off>
+                                                <i class="icon ion-arrow-down-b placeholder-icon ion-icon"></i>
+                                            </div>
+                                            <!-- role dropdown -->
+                                            <div class="people-panel-list role-list role-list-add angular-animate">
+                                                <ul>
+                                                    <li ng-repeat="role in vmSettings.peopleRoles" ng-click="vmSettings.chooseRole(role.name)">
+                                                        {{role.name}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="section-input-group people-input-group">
+                                        <div class="item-description">
+                                            <p>Status</p>
+                                        </div>
+                                        <div class="item-input-group">
+                                            <div class="item-input project-input">
+                                        <span class="ion-record placeholder-icon input-span"
+                                              ng-class="{'status-active': vmSettings.selectStatus == 'Active', 'status-inactive': vmSettings.selectStatus == 'Inactive'}"></span>
+                                                <input class="people-search-people people-status people-drop" type="text"
+                                                       ng-model="vmSettings.selectStatus" ng-click="vmSettings.showStatus()" readonly click-off>
+                                                <i class="icon ion-arrow-down-b placeholder-icon ion-icon"></i>
+                                            </div>
+                                            <!-- status dropdown -->
+                                            <div class="people-panel-list status-list status-list-add angular-animate">
+                                                <ul>
+                                                    <li ng-repeat="status in vmSettings.peopleStatus" ng-click="vmSettings.chooseStatus(status.name)">
+                                                <span class="ion-record placeholder-icon input-span"
+                                                      ng-class="{'status-active': status.name == 'Active', 'status-inactive': status.name == 'Inactive'}"></span>
+                                                        {{status.name}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="section-input-group people-input-group"
+                                         ng-class="{'is-viewer' : vmSettings.viewerSelected, 'not-viewer' : !vmSettings.viewerSelected}">
+                                        <div class="item-description">
+                                            <p>Team</p>
+                                        </div>
+                                        <div class="item-input-group">
+                                            <div class="item-input" id="add-manager-search" click-off>
+                                                <div style="width: 100%;height: 100%;display: flex;align-items:center;"
+                                                     ng-show="vmSettings.addSelectedManager" ng-click="vmSettings.clearNewManager()">
+                                                    <div class="user-input">
+                                                        <img ng-src="https://images.w3ibm.mybluemix.net/image/{{vmSettings.addSelectedManager._id}}?s=115">
+                                                    </div>
+                                                    <div style="padding-left: 60px;">{{vmSettings.addSelectedManager.cname}}</div>
+                                                </div>
+                                                <input type="text" id="add-manager-search"
+                                                       class="manager-search-input add-manager-search"
+                                                       ng-class="{'manager-selected': c}"
+                                                       ng-show="!vmSettings.addSelectedManager" placeholder="Find a person"
+                                                       ng-model="vmSettings.newManagerModel" ng-change="vmSettings.showNewManagers(vmSettings.newManagerModel)">
+                                                <i class="icon ion-search placeholder-icon ion-icon"></i>
+                                            </div>
+                                            <!-- search people result -->
+                                            <div class="people-panel-list add-manager-search-results angular-animate">
+                                                <ul>
+                                                    <li ng-repeat="u in vmSettings.filteredManagers" ng-click="vmSettings.selectNewManager(u)"
+                                                        ng-if="u._id !== 'all'">
+                                                <span class="user-list"><img
+                                                        ng-src="https://images.w3ibm.mybluemix.net/image/{{u._id}}?s=115"></span>
+                                                        {{u.cname}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <p class="error-text" ng-if="!vmSettings.isRealAdminValidate"><i>You don't have permissions to add someone as Admin. Please contact {{vmSettings.contactPerson}}</i></p>
+                                    </div>
+                                    <div class="section-input-group section-btn people-input-group">
+                                        <button class="btn btn-cancel" type="button" ng-click="vmSettings.cancelPeople()">
+                                            Cancel
+                                        </button>
+                                        <button class="btn btn-save" type="button" ng-click="vmSettings.addPerson()"
+                                                ng-disabled="!vmSettings.canAddPerson || !vmSettings.isRealAdminValidate">
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- people list -->
+                                <div id="peopleList" class="cancelClass">
+                                    <div ng-if="vmSettings.settingsPeople.length > 0" ng-repeat="person in vmSettings.settingsPeople track by $index"
+                                         class="skill-list people-list people-row"
+                                         ng-class="person.isEditPerson ? 'edit-person-expand' : 'edit-person'"
+                                         ng-init="personDetails(person);">
+                                        <div class="list-container" ng-class="{'bar-slide-right-out': person.person_delete}">
+                                            <div>
+                                                <div class="profile-image col-md-2"
+                                                     ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/'+ person._id +'.jpg?s=115)'}"
+                                                     ui-sref="home.people.profile({userID: person._id})">
+                                                </div>
+                                                <div class="col-md-6 people-details">
+                                                    <p class="name-list">
+                                                        {{(person.fname | capitalize ) + " " + (person.lname | capitalize)}}
+                                                    </p>
+
+                                                    <p class="email-list">
+                                                        {{person._id}}
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-md-3 people-status-list">
+                                            <span class="ion-record placeholder-icon input-span"
+                                                  ng-class="{'status-active': person.status == 'Active', 'status-inactive': person.status == 'Inactive'}"></span>
+
+                                                    <p class="status-label">{{person.status}}</p>
+                                                </div>
+
+                                        <span class="ion-close-round ion-icon list-options"
+                                              ng-click="vmSettings.deletePersonConfirm(person, $index)" ng-if="vmSettings.allowDelete"></span>
+                                        <span class="ion-edit ion-icon list-options"
+                                              ng-click="vmSettings.toggleEditPeople(person)"></span>
+                                            </div>
+                                            <!-- edit person details -->
+                                            <div id="edit-people-{{person.uid}}"
+                                                 class="category-fields people-fields person-edit" ng-if="person.isEditPerson"
+                                                 style="margin-top: 60px;">
+                                                <div class="section-input-group people-input-group">
+                                                    <div class="item-description">
+                                                        <p>Role</p>
+                                                    </div>
+                                                    <div class="item-input-group">
+                                                        <div class="item-input g">
+                                                            <input class="people-search-people people-drop" type="text"
+                                                                   ng-model="person.role" ng-click="vmSettings.showEditRoles(person.uid)"
+                                                                   ng-disabled="!vmSettings.isRealAdmin && person.role == 'Admin'" readonly click-off>
+                                                            <i class="icon ion-arrow-down-b placeholder-icon ion-icon"></i>
+                                                        </div>
+                                                        <!-- role dropdown -->
+                                                        <div class="people-panel-list role-list role-list-{{person.uid}} angular-animate">
+                                                            <ul>
+                                                                <li ng-repeat="role in vmSettings.peopleRoles"
+                                                                    ng-click="vmSettings.chooseEditRole(role.name, person)">
+                                                                    {{role.name}}
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="section-input-group people-input-group">
+                                                    <div class="item-description">
+                                                        <p>Status</p>
+                                                    </div>
+                                                    <div class="item-input-group">
+                                                        <div class="item-input project-input">
+                                                    <span class="ion-record placeholder-icon input-span"
+                                                          ng-class="{'status-active': person.status == 'Active', 'status-inactive': person.status == 'Inactive'}"></span>
+                                                            <input class="people-search-people people-status people-drop"
+                                                                   type="text" ng-model="person.status"
+                                                                   ng-click="vmSettings.showEditStatus(person.uid)" readonly click-off>
+                                                            <i class="icon ion-arrow-down-b placeholder-icon ion-icon"></i>
+                                                        </div>
+                                                        <!-- status dropdown -->
+                                                        <div class="people-panel-list status-list status-list-{{person.uid}} angular-animate">
+                                                            <ul>
+                                                                <li ng-repeat="status in vmSettings.peopleStatus"
+                                                                    ng-click="vmSettings.chooseEditStatus(status.name, person)">
+                                                            <span class="ion-record placeholder-icon input-span"
+                                                                  ng-class="{'status-active': status.name == 'Active', 'status-inactive': status.name == 'Inactive'}"></span>
+                                                                    {{status.name}}
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="section-input-group people-input-group"
+                                                     ng-class="{'is-viewer' : person.role === 'Viewer', 'not-viewer' : person.role !== 'Viewer'}">
+                                                    <div class="item-description">
+                                                        <p>Team</p>
+                                                    </div>
+                                                    <div class="item-input-group">
+                                                        <div class="item-input" id="manager-search" click-off>
+                                                            <div id="manager-label-{{$index}}"
+                                                                 style="width: 100%;height: 100%;display: flex;align-items:center;"
+                                                                 ng-if="person.editingManager !== true && (person.reports_to || person.selectedManager)"
+                                                                 ng-click="vmSettings.clearManagerSearch(person, $index)">
+                                                                <div class="user-input">
+                                                                    <img ng-src="https://images.w3ibm.mybluemix.net/image/{{person.selectedManager._id || person.reports_to._id}}?s=115">
+                                                                </div>
+                                                                <div style="padding-left: 60px;">{{person.selectedManager.cname
+                                                                    || person.reports_to.cname}}
+                                                                </div>
+                                                            </div>
+                                                            <input type="text" id="manager-search-{{$index}}"
+                                                                   class="manager-search-input manager-search-{{$index}}"
+                                                                   ng-if="person.editingManager === true || (!person.reports_to && !person.selectedManager)"
+                                                                   ng-class="{'manager-selected': person.editingManager !== true && (person.reports_to || person.selectedManager)}"
+                                                                   placeholder="Find a person"
+                                                                   ng-model="person.selectedManager._id"
+                                                                   ng-change="vmSettings.openManagerDropdown(person, $index)">
+                                                            <i class="icon ion-search placeholder-icon ion-icon"></i>
+                                                        </div>
+                                                        <!-- search people result -->
+                                                        <div class="people-panel-list manager-search-results-{{$index}} angular-animate">
+                                                            <ul>
+                                                                <li ng-repeat="u in vmSettings.filteredManagers"
+                                                                    ng-click="vmSettings.selectManager(person, u, $parent.$index)"
+                                                                    ng-if="u._id !== 'all'">
+                                                            <span class="user-list"><img
+                                                                    ng-src="https://images.w3ibm.mybluemix.net/image/{{u._id}}?s=115"></span>
+                                                                    {{u.cname}}
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p class="error-text" ng-if="!vmSettings.isRealAdminValidate && (!person.isRealAdminEditValidate || vmSettings.peopleTab == 'Admin')"><i>You don't have permissions to edit someone to/from Admin. Please contact {{vmSettings.contactPerson}}</i></p>
+                                                <div class="section-input-group section-btn people-input-group">
+                                                    <button class="btn btn-cancel" type="button"
+                                                            ng-click="vmSettings.cancelEditPerson(person, $index)">
+                                                        Cancel
+                                                    </button>
+                                                    <button class="btn btn-save" type="button"
+                                                            ng-disabled="!person.validateEdit || !person.isRealAdminEditValidate"
+                                                            ng-click="vmSettings.editPerson(person, $index)">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="vmSettings.settingsPeople.length == 0 && vmSettings.peopleTab == 'User'" class="no-records with-btn-grp">
+                                    No Users
+                                </div>
+                                <div ng-if="vmSettings.settingsPeople.length == 0 && vmSettings.peopleTab == 'Viewer'"
+                                     class="no-records with-btn-grp">
+                                    No Viewers
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

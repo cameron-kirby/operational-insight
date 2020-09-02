@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/png" href="assets/images/favicons/opIn_favicon.png" />
+    <title>Operational Insight</title>
+
+    <!-- CSS libraries -->
+    <!-- Normalize must come before all other CSS -->
+    <link rel="stylesheet" href="bower_components/normalize-css/normalize.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css" />
+    <link rel="stylesheet" href="assets/css/angular-datepicker.css" />
+    <link rel="stylesheet" href="bower_components/v-accordion/dist/v-accordion.min.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-clock/dist/angular-clock.css">
+
+    <!-- CSS Icons -->
+    <link rel="stylesheet" href="assets/css/ionicons.css" />
+    <link rel="stylesheet" href="assets/css/es-icons.css" />
+    <link rel="stylesheet" href="assets/css/flag-icon.css" />
+
+    <!-- build:remove:dist -->
+    <link rel="stylesheet" href="assets/css/generated/styles.min.css" />
+    <!-- /build -->
+
+    <!-- build:remove:dev -->
+    <link rel="stylesheet" href="assets/css/generated/styles.min.css" />
+    <!-- /build -->
+
+    <!-- JS -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/Add-Clear/addclear.min.js"></script>
+
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-material/angular-material.min.js"></script>
+
+    <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="bower_components/angular-base64/angular-base64.js"></script>
+    <script src="bower_components/angular-ui-clock/dist/angular-clock.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!--accordion-->
+    <script src="bower_components/v-accordion/dist/v-accordion.min.js"></script>
+
+    <!--Angular UI Bootstrap-->
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
+    <!-- momentjs -->
+    <script src="bower_components/moment/min/moment.min.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.min.js"></script>
+    <script src="bower_components/moment-range/dist/moment-range.min.js"></script>
+
+    <!-- datepicker -->
+    <!-- <script src="bower_components/angularjs-datepicker/dist/angular-datepicker.min.js"></script> -->
+    <script src="assets/js/angular-datepicker.min.js"></script>
+    <script src="assets/js/angular-range-datepicker.js"></script>
+
+
+    <!-- ANGULAR CUSTOM -->
+    <script src="app.js"></script>
+
+    <!--Configurations-->
+    <script src="config/dev.js"></script>
+
+    <!-- build:remove:dist -->
+    <!-- Modules -->
+    <!-- Login -->
+    <script src="modules/login/Login.module.js"></script>
+    <script src="modules/login/Login.controller.js"></script>
+        
+    <!-- SkillList -->
+    <script src="modules/skillList/SkillList.module.js"></script>
+    <script src="modules/skillList/SkillList.controller.js"></script>
+    
+    <!-- UserProfile -->
+    <script src="modules/userProfile/UserProfile.module.js"></script>
+    <script src="modules/userProfile/UserProfile.controller.js"></script>
+    <script src="modules/userProfile/UtilizationVerifiedMessage/UtilizationVerifiedMessage.controller.js"></script>
+    <script src="modules/userProfile/UtilizationVerifiedMessage/UtilizationVerifiedMessage.directive.js"></script>
+    
+    <!--Services-->
+    <script src="services/D3Service.js"></script>
+    <script src="services/navService.js"></script>
+    <script src="services/MainService.js"></script>
+    <script src="services/ModalService.js"></script>
+    <script src="services/PreselectService.js"></script>
+    <script src="services/utilities.js"></script>
+
+    <!--Controllers-->
+    <script src="controllers/AddProjectCtrl.js"></script>
+    <script src="controllers/AdminViewCtrl.js"></script>
+    <script src="controllers/MainCtrl.js"></script>
+    <script src="controllers/TreeMapCtrl.js"></script>
+    <script src="controllers/ProjDetailCtrl.js"></script>
+    <script src="controllers/ProjListCtrl.js"></script>
+    <script src="controllers/BubbleChartCtrl.js"></script>
+    <script src="controllers/SkillDetailCtrl.js"></script>
+    <script src="controllers/CardViewCtrl.js"></script>
+    <script src="controllers/WidgetsCtrl.js"></script>
+    <script src="controllers/SearchCtrl.js"></script>
+    <script src="controllers/EditModalCtrl.js"></script>
+    <script src="controllers/EditManagerModalCtrl.js"></script>
+    <script src="controllers/ModalSearchSkillCtrl.js"></script>
+    <script src="controllers/UpdateDetailCtrl.js"></script>
+    <script src="controllers/UpdateProjectCtrl.js"></script>
+    <script src="controllers/EditProjectDetailsCtrl.js"></script>
+    <script src="controllers/opinCustomRatingCtrl.js"></script>
+    <script src="controllers/SettingsCtrl.js"></script>
+    <script src="controllers/SettingsModalCtrl.js"></script>
+    <script src="controllers/SwitchTeamsModalCtrl.js"></script>
+    <script src="controllers/ProfProjDetailCtrl.js"></script>
+    <script src="controllers/ProfSkillDetailCtrl.js"></script>
+    <script src="controllers/PeopleListCtrl.js"></script>
+
+    <!--Directives-->
+    <script src="directives/TreeMapDirective.js"></script>
+    <script src="directives/BubbleChartDirective.js"></script>
+    <script src="directives/FloatingButtonDirective.js"></script>
+    <script src="directives/ProjectUtilDirective.js"></script>
+    <script src="directives/ProjectListDirective.js"></script>
+    <script src="directives/SearchDirective.js"></script>
+    <script src="directives/ClickOffDirective.js"></script>
+    <script src="directives/legendBoxColorDirective.js"></script>
+    <script src="directives/opinCustomRatingDirective.js"></script>
+    <script src="directives/BackDirective.js"></script>
+    <script src="directives/SpyStyleDirective.js"></script>
+    <script src="directives/ScrollingDirective.js"></script>
+
+    <!--Routers-->
+    <script src="routers/appRoutes.js"></script>
+    <!--Filters-->
+    <script src="filter/CapitalizeFilter.js"></script>
+    <script src="filter/AcronymFilter.js"></script>
+    <script src="filter/TruncateFilter.js"></script>
+    <script src="filter/FutureFilter.js"></script>
+    <script src="filter/PredicatByFilter.js"></script>
+
+    <!--Auth-->
+    <script src="auth/auth.factory.js"></script>
+    <script src="auth/auth.user.factory.js"></script>
+    <script src="auth/auth.interceptor.factory.js"></script>
+    <!-- /build -->
+
+    <!-- build:remove:dev -->
+    <script src="ui.min.js"></script>
+    <!-- /build -->
+  </head>
+  <body ng-app="ResrcUtilApp" md-theme="blueTheme" spy-style>
+    <div ui-view></div>
+  </body>
+</html>

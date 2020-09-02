@@ -1,0 +1,59 @@
+<div class="panel map-panel">
+    <div class="spinner-wrapper" ng-show="cardViewLoading"></div>
+    <div class="clear-loading spinner" ng-show="cardViewLoading">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="panel-heading map-header">
+
+        <div class="panel-title people-panel-title" ng-if="opHistory.length > 0">
+            <span class="glyphicon glyphicon-menu-left back-arrow" go-back></span>
+            <span class="back-msg" go-back>
+                {{back}}
+            </span>
+            <span ng-if="currentView.name == 'PeopleDetail'"> <span class="people-name">|</span>{{currentProfileName | capitalize}}</span>
+            <span ng-if="currentView.name == 'People'"> <span class="people-name">|</span>People</span>
+        </div>
+        <div class="panel-title people-panel-title" ng-if="opHistory.length === 0">
+            <span class="view-msg">
+                People
+            </span>
+            <span ng-if="currentView.name == 'PeopleDetail'"> <span class="people-name">|</span>{{currentProfileName | capitalize}}</span>
+        </div>
+        <div class="tab-wrapper">
+            <a class="ion-android-list" style="margin-right: 10px" ng-click="goToPeopleList()" ng-if="!isProfileDetailView"></a>
+            <a class="expand-contract" ng-class="{'ion-android-expand': !isFullSize, 'ion-android-contract': isFullSize}" aria-hidden="true"
+               ng-click="setFullSize()"></a>
+        </div>
+    </div>
+
+    <!--Card View-->
+    <div class="panel-body map-body card-view" style="overflow-x: visible;" ng-style="currentView.name == 'PeopleDetail' ? {'overflow': 'visible'} : {'overflow': 'auto'}">
+
+        <div ng-class="{'profile-details': profileVM.isProfileDetailView, 'card-view': !profileVM.isProfileDetailView}" ui-view="detailView" infinite-scroll="getUsers()">
+
+            <div class="panel panel-default profile-card" ng-repeat="person in people" ui-sref="home.people.profile({userID: person._id})" ng-if="people">
+                <div class="panel-heading">
+                    <div class="profile-image-container">
+                        <div class="maintain-even-aspect-ratio">
+                            <div class="profile-image image-content"
+                                ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/'+ person._id +'.jpg?s=115)'}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row name">{{(person.fname | capitalize ) + " " + (person.lname | capitalize)}}</div>
+                    <div class="row job-title">{{person.job_title}}</div>
+                    <div class="row statistic">
+                        <span class="number">{{person.num_projects}}</span>
+                        <span class="item">&nbsp;projects</span>
+                        <span class="number">{{person.skills.length}}</span>
+                        <span class="item">&nbsp;skills</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+{
+    "ldapSettings": {
+      "host": "bluepages.ibm.com"
+    },
+    "bluemixEmailService": {
+      "username": "b74fa0d2-25b4-44f3-96ce-4971eda2b2b1",
+      "password": "8fcb133f-ab08-4d31-becc-31f396d5e7d9",
+      "emailUrl": "https://mail.w3ibm.mybluemix.net/ptf/api/emails"
+    }
+}

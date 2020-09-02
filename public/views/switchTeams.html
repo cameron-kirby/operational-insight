@@ -1,0 +1,30 @@
+<div class="switch-team-modal-container">
+	<div class="modal-header switch-team-header">
+		<div class="switch-team-header-label">Switch Teams</div>
+		<div class="ion-close switch-team-header-close" ng-click="cancel()"></div>
+	</div>
+	<div class="modal-body switch-team-body">
+		<div class="manager-repeat">
+			<div ng-repeat="manager in peopleManagers" class="manager-list" ng-click="switchManager($index, manager._id, manager.team)">
+				<div class="col-md-10" style="cursor: pointer !important;" ng-class="{'all-manager': manager._id === 'all'}">
+					<div class="profile-image" ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/' +manager._id+ '?s=115)'}" ng-if="manager._id !== 'all'"></div>
+					<div class="profile-image ion-ios-people icon_element" ng-if="manager._id === 'all'"></div>
+					<div class="team-details">
+						<p class="name-list" ng-class="{'all-manager': manager._id === 'all'}">
+	                    	{{(manager.fname | capitalize ) + " " + (manager.lname | capitalize)}}
+	                    </p>
+	                    <p class="email-list" ng-if="manager._id !== 'all'">
+	                    	{{manager.team}}
+	                    </p>
+					</div>
+				</div>
+				<div class="col-md-2" style="height: 100%; cursor: pointer !important;">
+					<div class="select-mgr" ng-class="manager.isManagerSelected ? 'isManager-true' : 'isManager-false'">
+						<input class="select-mgr-cbox" type="checkbox" value="1" id="{{manager.uid}}-isManagerSelected" ng-model="manager.isManagerSelected"/>
+						<label for="{{manager.uid}}-isManagerSelected"></label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

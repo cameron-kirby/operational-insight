@@ -1,0 +1,117 @@
+<div class="panel map-panel">
+    <div class="spinner-wrapper" ng-show="peopleListLoading"></div>
+    <div class="clear-loading spinner" ng-show="peopleListLoading">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="panel-heading map-header">
+      <div class="panel-title people-panel-title" ng-if="opHistory.length > 0">
+          <span class="glyphicon glyphicon-menu-left back-arrow" go-back></span>
+          <span class="back-msg" go-back>
+              {{back}}
+          </span>
+          <span class="people-name">|</span>
+          <span>
+              {{currentView.name}}
+          </span>
+      </div>
+      <div class="panel-title people-panel-title" ng-if="opHistory.length === 0">
+          <span>
+              {{currentView.name}}
+          </span>
+      </div>
+      <div class="tab-wrapper">
+          <!-- test -->
+          <div class="section-input-group people-input-group">
+              <div class="item-description">
+                  <p>Year Filter:</p>
+              </div>
+              <div class="item-input-group">
+                  <div class="item-input">
+                      <input class="people-search-people people-drop" type="text" ng-model="yearFilter" ng-click="showYearFilter()" readonly click-off>
+                      <i class="icon ion-arrow-down-b placeholder-icon ion-icon"></i>
+                  </div>
+                  <!-- filter dropdown -->
+                  <div class="people-panel-list filter-list">
+                      <ul>
+                          <li ng-repeat="year in yearFilters" ng-click="applyYearFilter(year)" ng-class="{'filter-select': year === yearFilter}">
+                              {{year}}
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          <!-- test fin -->
+          <span class="info-btn ion-stats-bars" ng-click="goToPeople()"></span>
+          <a class="expand-contract" ng-class="{'ion-android-expand': !isFullSize, 'ion-android-contract': isFullSize}" aria-hidden="true" ng-click="setFullSize()"></a>
+      </div>
+  </div>
+  <div class="panel-body map-body skills-list-body" style="overflow-y: scroll; padding:30px 0px 30px 0px;" infinite-scroll="loadMore()">
+      <div>  <!-- style="overflow-x: visible;" -->
+          <div class="people-list-header">
+              <div>NAME</div>
+              <div>ROLE</div>
+              <div>UTILIZATION</div>
+          </div>
+          <!-- add `multiple` attribute to allow multiple sections to open at once -->
+          <v-accordion class="vAccordion--default" multiple control="accordion">
+              <!-- add expanded attribute to open the section -->
+              <v-pane ng-repeat="person in people track by $index" class="people-list-accordion">
+                  <v-pane-header class="person-pane-header">
+                      <div class="cat-header person-header">
+                        <!-- <span>{{(person.fname | capitalize ) + " " + (person.lname | capitalize)}}</span></div>
+                          <div class="person-role">{{person.job_title}}</div> -->
+                          <div class="person-name"><div class="profile-image" ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/'+person.user_id+'.jpg?s=115)'}"></div><span>{{(person.fname | capitalize ) + " " + (person.lname | capitalize)}}</span></div>
+                          <div class="person-role">{{person.job_title}}</div>
+                          <div class="person-util">{{person.user_util}}%</div>
+                      </div>
+                  </v-pane-header>
+                  <v-pane-content class="v-content">
+                      <v-accordion class="vAccordion--skill vAccordion--people" multiple control="inner_accordion">
+                          <v-pane ng-repeat="project in person.projects">
+                              <v-pane-header>  <!-- ng-click="getSkillUsers(skill_key, cat_key)" -->
+                                  <div class="cat-header">
+                                      <div class="project-box" ng-attr-id="{{project.proj_id}}" ng-style="setColor(project.proj_id)"></div>
+                                      <div class="proj-name">{{project.name}}</div>
+                                      <div class="proj-ave-util">{{project.proj_average_util}}%</div>
+                                  </div>
+                              </v-pane-header>
+                              <v-pane-content class="v-content">
+                                  <div style="overflow-y: scroll;">
+                                      <table class="table people-list-table">
+                                          <thead class="people-list-thread">
+                                              <th ng-click="sortType = 'start_date'; sortReverse = !sortReverse">
+                                                  DATE
+                                                  <span ng-show="sortType == 'start_date' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                                                  <span ng-show="sortType == 'start_date' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                                              </th>
+                                              <th ng-click="sortType = 'job_role'; sortReverse = !sortReverse">
+                                                  ROLE
+                                                  <span ng-show="sortType == 'job_role' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                                                  <span ng-show="sortType == 'job_role' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                                              </th>
+                                              <th ng-click="sortType = 'percentage'; sortReverse = !sortReverse">
+                                                  UTILIZATION
+                                                  <span ng-show="sortType == 'percentage' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                                                  <span ng-show="sortType == 'percentage' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                                              </th>
+                                          </thead>
+                                          <tbody>
+                                              <tr ng-repeat="u in project.utilization | orderBy:sortType:!sortReverse">
+                                                  <td><i class="ion-android-calendar" style="padding-right: 20px; font-size: 20px;"></i>{{u.start_date == u.end_date ? (u.start_date | date: 'M/d/yy') : (u.start_date | date: 'M/d/yy') + "-" + (u.end_date | date: 'M/d/yy')}}</td>
+                                                  <td>{{u.job_role}}</td>
+                                                  <td style="text-align: center;">{{u.percentage}}%</td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </v-pane-content>
+                          </v-pane>
+                      </v-accordion>
+                  </v-pane-content>
+              </v-pane>
+          </v-accordion>
+      </div>
+  </div>
+</div>

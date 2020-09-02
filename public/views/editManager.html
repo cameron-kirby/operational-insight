@@ -1,0 +1,50 @@
+<div class="manager-modal-container">
+	<div class="modal-header">
+		<h4>Edit Team</h4>
+	</div>
+	<div class="modal-body">
+		<div class="editingManager">
+            <div class="section-input-group">
+                <div class="item-input-group" >
+                	<p>Team</p>
+                    <div class="item-input" click-off>
+                    	<div style="width: 100%;height: 100%;display: flex;align-items:center;" ng-if="!isEditing" ng-click="startManagerEditing()" >
+                    		<div class="user-input">
+                    			<img ng-src="https://images.w3ibm.mybluemix.net/image/{{currentManager._id}}?s=115">
+                    		</div>
+                    		<div style="padding-left: 60px;" ng-if="currentManager !== ''">{{currentManager.cname}}</div>
+												<div style="padding-left: 20px;" ng-if="currentManager === ''">NONE</div>
+                    	</div>
+                        <input class="edit-manager-input" type="text" placeholder="Find a person"
+                        	ng-model="managerModel" ng-change="openManagerDropdown(managerModel)" ng-show="isEditing">
+                        <i class="icon ion-search placeholder-icon ion-icon"></i>
+                    </div>
+                    <div class="manager-note"><i class="ion-ios-information"></i> NOTE: <small>Clicking "Save" will automatically update your reporting manager.</small></div>
+
+                    <div class="people-panel-list edit-manager-result angular-animate">
+                        <ul>
+                            <li class="team-list" ng-repeat="u in filteredManagers" ng-click="selectManager(u)" ng-if="u._id !== 'all'">
+                                <span class="user-list"><img ng-src="https://images.w3ibm.mybluemix.net/image/{{ u._id }}?s=115"></span>
+                                <span class="team-details">
+                                    <p class="manager-info">
+                                        {{(u.fname | capitalize ) + " " + (u.lname | capitalize)}}
+                                    </p>
+                                    <p class="team-info" ng-if="manager._id !== 'all'">
+                                        {{u.team}}
+                                    </p>
+                                </span>
+                                <br>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+	<div class="modal-footer">
+	    <div class="button-group">
+	        <button class="btn btn-save" type="button" ng-click="saveEdit(currentManager)" ng-disabled="!changeMgr">Save</button>
+	        <button class="btn btn-cancel" type="button" ng-click="cancelEdit()">Cancel</button>
+	    </div>
+	</div>
+</div>

@@ -1,0 +1,57 @@
+<div class="container-fluid skill-detail-container" ng-class="{'fade-prof-skill': peopleWithSkill}" style="opacity: 0;">
+    <div style="overflow-x: visible;">
+        <!--upper part-->
+        <div class="row" style="min-height: 150px;">
+            <div class="col col-md-4 skill-name">
+                <span class="people-count" ng-class="peopleWithSkill.length < 10 ? 'one-digit' : 'two-digit'">{{peopleWithSkill.length}}</span>
+                <span>{{skill.name}}</span>
+            </div>
+            <div class="col col-md-4 skill-overview">
+                <span>DESCRIPTION</span>
+
+                <p>
+                    {{skill.description}}
+                </p>
+            </div>
+            <div class="col col-md-4 related-skills">
+                <div>RELATED SKILLS</div>
+                <span class="related-skill-list" ng-repeat="skill in skill.relatedSkills" ng-click="navToSkill(skill.skill_id)">
+                    {{skill.name}}
+                </span>
+            </div>
+        </div>
+
+        <!--people table-->
+        <div class="row">
+            <table class="table">
+                <caption>People</caption>
+                <!-- table heading-->
+                <tr>
+                    <th colspan="2"><span>NAME</span></th>
+                    <th ng-repeat="title in ['EMAIL', 'JOB TITLE', 'GEO', 'PROFICIENCY']">
+                        <span>{{title}}</span>
+                    </th>
+                </tr>
+                <!--table content-->
+                <tr class="skill-list" ng-repeat="person in peopleWithSkill" ui-sref="home.people.profile({userID: person._id})">
+                    <td>
+                        <div class="profile-image"
+                             ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/' + person._id + '.jpg?s=115)'}"></div>
+                    </td>
+                    <td>{{(person.fname | capitalize) + " " + (person.lname | capitalize)}}</td>
+                    <td>{{person.email}}</td>
+                    <td>{{person.job_title}}</td>
+                    <td>
+                        <span style="width: 32px; height: 32px" class="flag-icon"
+                              ng-class="'flag-icon-' + person.cc"></span>
+                    </td>
+                    <td>
+                        <span class="rating">
+                            <opin-custom-rating ng-model="person.skills.proficiency[0].rating" readonly="true"></opin-custom-rating>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

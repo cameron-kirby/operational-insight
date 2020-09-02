@@ -1,0 +1,15 @@
+<div class="settings-modal-container">
+	<div class="modal-header settings-header">
+		<p class="settings-header-label">Remove {{deleteField}}</p>
+		<span class="ion-close" ng-click="settingsCancel()"></span>
+	</div>
+	<div class="modal-body settings-body">
+		<p>Are you sure you want to remove this {{deleteField}}?</p>
+	</div>
+	<div class="modal-footer settings-footer">
+	    <div class="button-group">
+	        <button class="btn btn-cancel" type="button" ng-click="vm.settingsCancel()">Cancel</button>
+	        <button class="btn btn-save" type="button" ng-click="vm.settingsConfirm()">Confirm</button>
+	    </div>
+	</div>
+</div>

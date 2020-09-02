@@ -1,0 +1,269 @@
+<!--First Row-->
+<opin-utilization-verified-message
+    ng-if="profileVM.showUtilizationVerifyOverlay">
+</opin-utilization-verified-message>
+<div class="container-fluid person-profile" ng-if="profileVM.dataLoaded" style="height: 100%;">
+    <div class="row">
+        <div class="one col-md-4">
+            <div class="three">
+                <div class="inner3">
+                    <div class="profile-bio">
+                        <div class="profile-image-container" style="margin-bottom: 7px">
+                            <div class="maintain-even-aspect-ratio">
+                                <div class="profile-image image-content"
+                                    ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/' +              profileVM.person._id +'.jpg?s=115)'}">
+                                </div>
+                            </div>
+                        </div>
+                        <h4>{{(profileVM.person.fname | capitalize) + " " + (profileVM.person.lname | capitalize)}}</h4>
+                        <h5 style="width:100%;margin-top: 0px">{{profileVM.person.job_title }}</h5>
+                    </div>
+                    <div class="profile-details">
+                        <div class="profile-contact">
+                            <p><span class="ion-android-call"></span> {{profileVM.person.phone_number || "None"}}</p>
+                            <p><span class="ion-android-mail"></span> {{profileVM.person._id}}</p>
+                        </div>
+                        <div class="profile-manager" ng-if="profileVM.person.role !== 'Viewer'">
+                            <div>
+                                <span>Team: <span ng-if="profileVM.person.reports_to !== ''">{{profileVM.person.reports_to.fname + ' ' + profileVM.person.reports_to.lname || "None"}}</span>
+                                            <span ng-if="profileVM.person.reports_to === ''">NONE</span></span>
+                                <div class="ion-edit edit-icon" ng-if="profileVM.person._id === user.id"
+                                    ng-click="profileVM.editManager(profileVM.person)"></div>
+                            </div>
+                        </div>
+                        <div class="profile-info">
+                            <p>{{profileVM.person.employee_type | truncate: 50}} | {{ profileVM.person.cc | uppercase}}</p>
+                            <p>{{profileVM.person.notesid}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="four">
+                <div class="inner4">
+                    <div class="panel vacation-panel">
+                        <div class="panel-heading">
+                            <div class="panel-title">Out of Office</div>
+                            <div class="ion-edit edit-icon" ui-sref="home.people.profile.edit.tab({edit:'Details'})"  ng-if="profileVM.person._id == user.id  && profileVM.person.role !== 'Viewer'"></div>
+                        </div>
+                        <div class="panel-body" ng-class="{'isEditing': isEditing}">
+                            <div class="add-vacation" ng-if="(profileVM.person.vacations | isFuture:'start_date':'end_date').length == 0 && profileVM.person._id == user.id && profileVM.person.role !== 'Viewer'">
+                                <span class="ion-plus" ng-click="profileVM.addVacation()"></span>
+                                <p ng-click="profileVM.addVacation()">Tap Here to add<br>out-of-office dates</p>
+                            </div>
+                            <div class="add-vacation" ng-if="(profileVM.person.vacations | isFuture:'start_date':'end_date').length == 0 && (profileVM.person._id != user.id || profileVM.person.role == 'Viewer')">
+                                <p>No Vacation Dates</p>
+                            </div>
+                            <table class="table" ng-if="profileVM.person.vacations.length > 0">
+                                <tr ng-repeat="vacation in profileVM.person.vacations | isFuture:'start_date':'end_date' | orderBy: 'start_date'">
+                                    <td class="vacation-dates">
+                                        {{vacation.start_date == vacation.end_date ?
+                                        (vacation.start_date | date: 'M/d/yy') :
+                                        (vacation.start_date | date: 'M/d/yy') + " - " + (vacation.end_date | date: 'M/d/yy')}}
+                                    </td>
+                                    <td class="vacation-location">
+                                        {{vacation.location}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="two col-md-8">
+            <div class="inner2">
+                <div class="col col-md-8 projects">
+                    <div class="panel" project-util ng-if="profileVM.dataLoaded && profileVM.projectView == 'projectUtil'">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <div class="count-icon">
+                                    <span class="projectCount">{{profileVM.person.projects.length}}</span> Projects
+                                </div>
+                                <div class="header-icon-wrapper">
+                                    <div id="project_view_selection" class="btn-group" ng-hide="showBackArrow">
+                                        <a id="projects" class="btn" ng-class="{'active': profileVM.projectView == 'projectUtil'}">Projects</a>
+                                        <a id="skills" class="btn" ng-class="{'active': profileVM.projectView == 'skills'}" ng-click="profileVM.changeProjectView('skills')">Skills</a>
+                                    </div>
+                                    <button id="validate-utilization-button"
+                                       ng-if="profileVM.person._id === user.id && profileVM.person.role !== 'Viewer'"
+                                       ng-class="{'square-button' : profileVM.utilVerifyState.current === profileVM.utilVerifyState.UNVERIFIED
+                                                                    || profileVM.utilVerifyState.current === profileVM.utilVerifyState.PENDING,
+                                                  'square-button-toggled' : profileVM.utilVerifyState.current === profileVM.utilVerifyState.VERIFIED}"
+                                       ng-click="profileVM.handleValidateUtilizationButtonClicked()">
+                                      <span>
+                                        <i ng-class="profileVM.getVerifyButtonCssClasses()"/>
+                                        <p>{{profileVM.utilVeriyButtonText}}</p>
+                                      </span>
+                                    </button>
+                                    <span class="info-btn ion-android-list" ng-click="profileVM.changeProjectView('projectList')"></span>
+                                    <div class="ion-edit edit-icon" ui-sref="home.people.profile.edit.tab({edit:'Projects'})"
+                                        ng-if="profileVM.person._id == user.id && profileVM.person.role !== 'Viewer'"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body projects-body" style="overflow: hidden;">
+                            <div class="legend-wrapper">
+                              <div class="legend-group" ng-if="profileVM.person.projects.length === 0">No Projects</div>
+                              <div class="legend-group" ng-if="profileVM.person.projects.length > 0">
+                                <div class="legend" ng-repeat="p in profileVM.person.projects">
+                                    <div id="{{p.proj_id}}" class="legend-box" ng-class="'legend-{{p.proj_id}}'" legend-box-color></div>
+                                    <span>{{p.name}}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="add-skills" ng-if="profileVM.person.projects.length == 0 && profileVM.person._id == user.id && profileVM.person.role !== 'Viewer'">
+                                <span class="ion-plus" ng-click="profileVM.addNewProject()"></span>
+                                <p ng-click="profileVM.addNewProject()">Tap Here to add<br>a new project</p>
+                            </div>
+                            <div class="add-skills" ng-if="profileVM.person.projects.length == 0 && (profileVM.person._id != user.id || profileVM.person.role == 'Viewer')">
+                                <p>No Projects Yet</p>
+                            </div>
+                            <div class="project-util-container" ng-if="profileVM.person.projects.length > 0"></div>
+                            <div class="chart-x-axis" ng-if="profileVM.person.projects.length > 0"></div>
+                        </div>
+                    </div>
+                    <div class="panel" project-list ng-if="profileVM.dataLoaded && profileVM.projectView == 'projectList'">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <div class="count-icon">
+                                    <span class="projectCount">{{profileVM.person.projects.length}}</span> Projects
+                                </div>
+                                <div class="header-icon-wrapper">
+                                    <div id="project_view_selection" class="btn-group" ng-hide="showBackArrow">
+                                        <a id="projects" class="btn" ng-class="{'active': profileVM.projectView == 'projectList'}">Projects</a>
+                                        <a id="skills" class="btn" ng-class="{'active': profileVM.projectView == 'skills'}" ng-click="profileVM.changeProjectView('skills')">Skills</a>
+                                    </div>
+                                    <button id="validate-utilization-button"
+                                       ng-if="profileVM.person._id === user.id && profileVM.person.role !== 'Viewer'"
+                                       ng-class="{'square-button' : profileVM.utilVerifyState.current === profileVM.utilVerifyState.UNVERIFIED
+                                                                    || profileVM.utilVerifyState.current === profileVM.utilVerifyState.PENDING,
+                                                  'square-button-toggled' : profileVM.utilVerifyState.current === profileVM.utilVerifyState.VERIFIED}"
+                                       ng-click="profileVM.handleValidateUtilizationButtonClicked()">
+                                      <span>
+                                        <i ng-class="profileVM.getVerifyButtonCssClasses()"/>
+                                        <p>{{profileVM.utilVeriyButtonText}}</p>
+                                      </span>
+                                    </button>
+                                    <span class="info-btn ion-stats-bars util-directive-icon" ng-click="profileVM.changeProjectView('projectUtil')"></span>
+                                    <div class="ion-edit edit-icon" ui-sref="home.people.profile.edit.tab({edit:'Projects'})"
+                                        ng-if="profileVM.person._id === user.id && profileVM.person.role !== 'Viewer'"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body project-list-body" ng-if="profileVM.dataLoaded && projects.length>0" style="padding-bottom: 0;">
+                            <div class="legend-wrapper" style="position: absolute;justify-content:flex-end;">
+                                <div layout="row" layout-align="end center" style="padding: 15px;">
+                                    <div class="section-input-group people-input-group">
+                                        <div class="item-description">
+                                            <p>Year:</p>
+                                        </div>
+                                        <div class="item-input-group">
+                                            <div class="item-input">
+                                                <input class="people-search-people people-drop" type="text" ng-model="yearFilter" ng-click="showYearFilter()" readonly click-off>
+                                                <i class="icon ion-arrow-down-b placeholder-icon ion-icon"></i>
+                                            </div>
+                                            <!-- filter dropdown -->
+                                            <div class="people-panel-list filter-list">
+                                                <ul>
+                                                  <li ng-repeat="year in yearFilters" ng-click="applyYearFilter(year)" ng-class="{'filter-select': year === yearFilter}">
+                                                    {{year}}
+                                                  </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="people-view-proj-list">
+                                <table class="project-list" ng-if="projects">
+                                    <thead>
+                                        <th style="padding-left: 10px"></th>
+                                        <th colspan = "2" ng-click="sortType = 'name'; sortReverse = !sortReverse">Project Name<span ng-show="sortType == 'name' && sortReverse" class="ion-android-arrow-dropdown"></span><span ng-show="sortType == 'name' && !sortReverse" class="ion-android-arrow-dropup"></span></th>
+                                        <th ng-click="sortType = 'work_type'; sortReverse = !sortReverse">Status<span ng-show="sortType == 'work_type' && sortReverse" class="ion-android-arrow-dropdown"></span><span ng-show="sortType == 'work_type' && !sortReverse" class="ion-android-arrow-dropup"></span></th>
+                                        <th ng-click="sortType = 'start_date'; sortReverse = !sortReverse">Duration<span ng-show="sortType == 'start_date' && sortReverse" class="ion-android-arrow-dropdown"></span><span ng-show="sortType == 'start_date' && !sortReverse" class="ion-android-arrow-dropup"></span></th>
+                                        <th style="text-align: center;" ng-click="sortType = 'percentage'; sortReverse = !sortReverse">Utilization<span ng-show="sortType == 'percentage' && sortReverse" class="ion-android-arrow-dropdown"></span><span ng-show="sortType == 'percentage' && !sortReverse" class="ion-android-arrow-dropup"></span></th>
+                                        <th style="padding-right: 10px"></th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="project in projects | orderBy:sortType:!sortReverse" class="project-list-row" ng-attr-id="{{project.proj_id}}">
+                                            <td></td>
+                                            <td class="project-box">
+                                                <div ng-attr-id="{{ project.proj_id }}"></div>
+                                            </td>
+                                            <td class="project-name">
+                                                {{project.name | truncate: 30}}<br><small class="project-component"> {{project.component}}</small>
+                                            </td>
+                                            <td class="project-worktype">{{project.work_type | truncate: 30}}
+                                            </td>
+                                            <td class="project-duration">
+                                                {{(project.start_date | date: 'MM/d/yy') + " - " + (project.end_date | date: 'MM/d/yy')}}
+                                            </td>
+                                            <td class="project-util">
+                                                {{project.percentage + "%"}}
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--<div ng-if="projects.length==0" style="text-align: center">-->
+                            <!--<p>No projects yet</p>-->
+                        <!--</div>-->
+                        <div class="projects-none" ng-if="profileVM.person.projects.length == 0 && profileVM.person._id == user.id && profileVM.person.role !== 'Viewer'">
+                            <span class="ion-plus" ng-click="profileVM.addNewProject()"></span>
+                            <p ng-click="profileVM.addNewProject()">Tap Here to add<br>a new project</p>
+                        </div>
+                        <div class="projects-none" ng-if="profileVM.person.projects.length == 0 && (profileVM.person._id != user.id || profileVM.person.role == 'Viewer')">
+                            <p>No Projects Yet</p>
+                        </div>
+                    </div>
+
+                    <div class="panel" ng-if="profileVM.dataLoaded && profileVM.projectView == 'skills'">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <div class="count-icon">
+                                    <span class="skillCount">{{profileVM.person.skills.length}}</span> Skills
+                                </div>
+                                <div class="header-icon-wrapper">
+                                    <div id="project_view_selection" class="btn-group" ng-hide="showBackArrow">
+                                        <a id="projects" class="btn" ng-class="{'active': profileVM.projectView == 'projectUtil'}" ng-click="profileVM.changeProjectView('projectList')">Projects</a>
+                                        <a id="skills" class="btn" ng-class="{'active': profileVM.projectView == 'skills'}">Skills</a>
+                                    </div>
+                                    <div class="ion-edit edit-icon" ui-sref="home.people.profile.edit.tab({edit:'Skills'})"
+                                        ng-if="profileVM.person._id == user.id && profileVM.person.role !== 'Viewer'" ng-class="{'prof-skill-list' : profileVM.projectView == 'skills'}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body skills-body" ng-style="{'display': profileVM.person.skills.length == 0 ? 'flex' : 'block'}" style="padding-bottom: 0;" ng-if="profileVM.dataLoaded">
+                            <div class="add-skills" ng-if="profileVM.person.skills.length == 0 && profileVM.person._id == user.id && profileVM.person.role !== 'Viewer'">
+                                <span class="ion-plus" ng-click="profileVM.addNewSkill()"></span>
+                                <p ng-click="profileVM.addNewSkill()">Tap Here to add<br>a new skill</p>
+                            </div>
+                            <div class="add-skills" ng-if="profileVM.person.skills.length == 0 && (profileVM.person._id != user.id || profileVM.person.role == 'Viewer')">
+                                <p>No Skills Yet</p>
+                            </div>
+                            <table class="table" ng-if="profileVM.person.skills.length > 0">
+                                <tr ng-repeat="skill in profileVM.person.skills" ui-sref="home.skills.skillDetail({skillID: skill.id, manager: myManager})">
+                                    <td></td>
+                                    <td>
+                                        <span class="ion-record skill-bullet" ng-style="{'color': profileVM.skillColorMapping[skill.category_id]}"></span>
+                                    </td>
+                                    <td class="skill-name">
+                                        {{skill.name}}
+                                    </td>
+                                    <td>
+                                        <span class="rating">
+                                            <opin-custom-rating ng-model="skill.proficiency[0].rating" readonly="true"></opin-custom-rating>
+                                        </span>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

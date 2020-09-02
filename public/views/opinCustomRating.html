@@ -1,0 +1,3 @@
+<span class="rating">
+    <i ng-repeat="level in ratingLevels" class="ratingTooltip" ng-class="{'ion-android-star-outline': !level.focus, 'ion-android-star': level.focus}" tooltip="{{level.description}}" ng-mouseover="proficiencyHover($index)" ng-mouseleave="proficiencyClear()" ng-click="selectProficiency($index+1)"></i>
+</span>

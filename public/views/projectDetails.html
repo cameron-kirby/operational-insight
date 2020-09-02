@@ -1,0 +1,132 @@
+<div class="container-fluid" ng-if="project">
+    <div class="row">
+        <div class="ion-edit edit-icon" ui-sref="home.projects.detail.edit"  ng-if="person._id == user.id  && person.role !== 'Viewer'" style="position:absolute;top:5px;right:0px"></div>
+    </div>
+    <!--upper part-->
+    <div class="row">
+        <div class="col col-md-4">
+            <div class="project-name">{{project.name}} <a href="{{project.project_link}}" target="_blank" class="anchor ion-share" ng-if="project.project_link"/></div>
+            <div class="project-overview">
+                <span class="glyphicon glyphicon-user"></span>
+                <span>{{project.people_count}}</span>
+                <span class="glyphicon glyphicon-time"></span>
+                <span>{{project.total_hours + " hrs"}}</span>
+            </div>
+        </div>
+        <div class="col col-md-4 col-no-left-padding">
+            <div class="project-status">
+                <i class="ion-record" color="white" ng-if="project.status=='Active New Development'"/>
+                <i class="ion-contrast" color="white" ng-if="project.status=='Active Ongoing Support'"/>
+                <i class="ion-android-radio-button-off" color="white" ng-if="project.status=='Lifecycle Management'"/>
+                <span>{{project.status}}</span>
+            </div>
+            <p class="project-description">
+                {{project.description}}
+            </p>
+        </div>
+        <div class="col col-md-4 project-info-table">
+            <table style="width: 100%">
+                <tr>
+                    <td>Process:</td>
+                    <td>{{project.process}}</td>
+                </tr>
+                <tr>
+                    <td>Geo:</td>
+                    <td>{{project.geo}}</td>
+                </tr>
+                <tr ng-if="project.IPT_record">
+                    <td>IPT Record:</td>
+                    <td><a href="{{ipt_link || ipt_url+project.IPT_record}}" target="_blank" class="anchor">{{project.IPT_record}}</a></td>
+                </tr>
+                <tr>
+                    <td>Technical Lead</td>
+                    <td>
+                        <span ng-if="project.technical_leads.length > 1" ng-repeat="lead in project.technical_leads">
+                            {{(lead.fname | capitalize) + " " + (lead.lname | capitalize)}}{{$last ? '' : ',&nbsp;'}}
+                        </span>
+                        <span ng-if="project.technical_leads.length < 2">
+                            {{(project.technical_leads[0].fname | capitalize) + " "
+                            + (project.technical_leads[0].lname | capitalize)}}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Project Manager:</td>
+                    <td>
+                        <span ng-if="project.project_managers.length > 1" ng-repeat="pm in project.project_managers">
+                            {{(pm.fname | capitalize) + " " + (pm.lname | capitalize)}}{{$last ? '' : ',&nbsp;'}}
+                        </span>
+                        <span ng-if="project.project_managers.length < 2">
+                            {{(project.project_managers[0].fname | capitalize) + " "
+                            + (project.project_managers[0].lname | capitalize)}}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Deliverable:</td>
+                    <td>
+                        <div>
+                            Agreed- {{project.deliverable.agreed | date: "MMM dd, yyyy"}}
+                        </div>
+                        <div>
+                            Est.- {{project.deliverable.estimate | date: "MMM dd, yyyy"}}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <!--people table-->
+    <div class="row">
+        <table class="table">
+            <caption>People</caption>
+            <!-- table heading-->
+            <thead>
+            <th colspan="2" ng-click="sortType = 'fname'; sortReverse = !sortReverse">
+                <span>NAME</span>
+                <span ng-show="sortType == 'fname' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                <span ng-show="sortType == 'fname' && !sortReverse" class="ion-android-arrow-dropup"></span>
+            </th>
+            <th ng-click="sortType = 'component'; sortReverse = !sortReverse">
+                <span>COMPONENT</span>
+                <span ng-show="sortType == 'component' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                <span ng-show="sortType == 'component' && !sortReverse" class="ion-android-arrow-dropup"></span>
+            </th>
+            <th ng-click="sortType = 'job_role'; sortReverse = !sortReverse">
+                <span>ROLE</span>
+                <span ng-show="sortType == 'job_role' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                <span ng-show="sortType == 'job_role' && !sortReverse" class="ion-android-arrow-dropup"></span>
+            </th>
+            <th ng-click="sortType = 'cc'; sortReverse = !sortReverse">
+                <span>GEO</span>
+                <span ng-show="sortType == 'cc' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                <span ng-show="sortType == 'cc' && !sortReverse" class="ion-android-arrow-dropup"></span>
+            </th>
+            <th ng-click="sortType = 'utilization'; sortReverse = !sortReverse">
+                <span>UTILIZATION</span>
+                <span ng-show="sortType == 'utilization' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                <span ng-show="sortType == 'utilization' && !sortReverse" class="ion-android-arrow-dropup"></span>
+            </th>
+            </thead>
+            <tbody>
+            <!--table content-->
+            <tr class="proj-detail-tr" ng-repeat="person in project.team | orderBy:sortType:sortReverse" ui-sref="home.people.profile({userID: person.id})">
+                <td>
+                    <div class="profile-image" ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/'
+                        + person.id + '.jpg?s=115)'}"></div>
+                </td>
+                <td>{{(person.fname | capitalize) + " " + (person.lname | capitalize)}}</td>
+                <td>{{person.component}}</td>
+                <td>{{person.job_role}}</td>
+                <td>
+                        <span style="width: 32px; height: 32px" class="flag-icon flag"
+                              ng-class="'flag-icon-' + person.cc"></span>
+                </td>
+                <td>{{person.utilization}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

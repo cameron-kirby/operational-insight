@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+  </style>
+</head>
+<body>
+  <table style="border-collapse: collapse;
+                border-spacing: 0px;">
+    <tr style="background-color: #272e36;
+               border-bottom: 1px solid #59616d;
+               color: #e7e8e9;
+               font-family: Helvetica Neue Regular, Helvetica, Arial, sans-serif;">
+      <td>
+        <table style="border-collapse: collapse;
+                      border-spacing: 0px;">
+          <tr>
+            <td>
+              <img style="margin: 20px 0px 20px 30px;
+                          vertical-align: middle;"
+                   src="<%= domain %>/assets/images/favicons/opin_logo_small.png"/>
+            </td>
+            <td>
+              <p style="margin-left: 10px;">Operational</p>
+            </td>
+            <td>
+              <p style="font-weight: bold;">Insight</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr style="background-color: #272e36;
+               color: #e7e8e9;
+               font-family: Helvetica Neue Regular, Helvetica, Arial, sans-serif;">
+      <td style="padding: 20px 0px 50px 0px;">
+        <p style="color: #00ad70;
+                  margin-left: 30px;">Hi
+          <%= firstName %>,</p>
+        <p style="margin: 0px 30px 40px 30px;">
+          It's time to update your workload on Operational Insight! Please remember to log in to Operational Insight to validate your current projects.
+        </p>
+        <a style="border: 1px solid #00ad70;
+                  color: #00ad70;
+                  cursor: pointer;
+                  margin-left: 30px;
+                  margin-top: 40px;
+                  padding: 10px 20px 10px 20px;
+                  text-decoration: none;"
+           href="<%= domain %>/#/login?nextState=editProfile&userId=<%= user_id %>&token=<%= loginToken %>">
+						Log In
+					</a>
+      </td>
+      <td>
+      </td>
+  </table>
+</body>
+
+</html>

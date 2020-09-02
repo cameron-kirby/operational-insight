@@ -1,0 +1,69 @@
+<div class="panel map-panel">
+    <div class="spinner-wrapper" ng-show="bubbleChartLoading"></div>
+    <div class="clear-loading spinner" ng-show="bubbleChartLoading">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="panel-heading map-header">
+        <div class="panel-title people-panel-title" ng-if="opHistory.length > 0">
+            <span class="glyphicon glyphicon-menu-left back-arrow" go-back></span>
+            <span class="back-msg" go-back>
+              {{back}}
+            </span>
+            <span class="people-name">|</span>
+            <span ng-if="currentView.name === 'SkillDetail'">
+              {{currentSkill}}
+            </span>
+            <span ng-if="currentView.name !== 'SkillDetail'">
+              {{currentView.name}}
+            </span>
+        </div>
+        <div class="panel-title people-panel-title" ng-if="opHistory.length === 0">
+            <span ng-if="currentView.name === 'SkillDetail'">
+                {{currentSkill}}
+            </span>
+            <span ng-if="currentView.name !== 'SkillDetail'">
+                {{currentView.name}}
+            </span>
+        </div>
+        <div class="tab-wrapper">
+            <div ng-show="filteredSkills.length > 0" class="to-show">
+                <div id="view_selection" class="btn-group" ng-if="!fromProfile">
+                    <a id="all" class="btn" ng-class="{'active': tab == 'all'}" ng-click="changeTab('all')">All Skills</a>
+                    <a id="category" class="btn" ng-class="{'active': tab == 'category'}" ng-click="changeTab('category')">Categorized</a>
+                </div>
+            </div>
+            <span class="info-btn ion-android-list" ng-click="vm.switchToListView()"></span>
+            <a class="expand-contract"
+               ng-class="{'ion-android-expand': !isFullSize, 'ion-android-contract': isFullSize}"
+               aria-hidden="true"
+               ng-click="setFullSize()"></a>
+        </div>
+    </div>
+    <div ng-if="filteredSkills.length == 0" class="no-records">
+        No Skills
+    </div>
+    <div class="bubble-legend" ng-show="filteredSkills.length > 0 && !fromProfile">
+        <h5>CATEGORIES : </h5>
+        <div class="category-list">
+            <div class="category-item" ng-repeat="c in categoryObjs">
+                <span ng-style="vm.setColor(c.id)"></span>
+                {{c.name}}
+            </div>
+        </div>
+    </div>
+    <!--Bubble Chart-->
+    <div ng-if="!fromProfile" class="full-height">
+        <div class="panel-body map-body" ng-class="{'is-detail': isDetail, 'not-detail': !isDetail}" bubble-chart>
+            <div class="skill-details angular-animate animate-show-hide" ui-view="detailView" ng-show="isSkillDetailView"></div>
+        </div>
+    </div>
+
+    <!-- this is the skill details page that will be used when navigated from profile details -->
+    <div ng-if="fromProfile" class="full-height">
+        <div class="panel-body map-body" style="background-color: {{randColor}}">
+            <div class="skill-details angular-animate animate-show-hide" ui-view="detailView"></div>
+        </div>
+    </div>
+</div>

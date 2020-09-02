@@ -1,0 +1,1453 @@
+@import "aspectRatio";
+@import (reference) "index";
+@import (reference) "style";
+
+@font-size: 15px;
+@line-height: 1.4;
+@lines-to-show: 2;
+
+
+.maintain-even-aspect-ratio {
+  padding: 20%;
+}
+
+.profile-image-container {
+  margin: 10px auto;
+  width: 100%;
+
+  .profile-image {
+    .profile-image-mixin;
+    
+    background-position: center center;
+    background-size: cover;
+    border-radius: 50%;
+  }
+}
+
+.profile-image-mixin {
+  @media @windows {
+    min-width: 65px;
+    min-height: 65px;
+  }
+
+  @media @xsDesktop {
+    min-width: 65px;
+    min-height: 65px;
+  }
+
+  @media @smallDesktop {
+    min-width: 100px;
+    min-height: 100px;
+  }
+
+  @media only screen and (min-width: 1600px) and (max-width: 1679px) {
+    min-width: 100px;
+    min-height: 100px;
+  }
+}
+
+.expand-contract {
+  cursor: pointer !important;
+}
+
+.add-skills-mixin {
+
+  .add-skills {
+    text-align: center;
+
+    .ion-plus {
+      display: inline-block;
+      font-size: 1.2rem;
+      border-radius: 50%;
+      border: 1px white solid;
+      padding: 0.5rem .9rem;
+      margin-bottom: 0.5rem;
+      cursor: pointer !important;
+    }
+
+    p {
+      font-size: 0.8rem;
+      cursor: pointer !important;
+    }
+  }
+}
+
+.people-panel-title {
+  .people-name {
+    margin-left: 0.8rem;
+    margin-right: 0.8rem;
+    color:grey;
+  }
+}
+
+.card-view {
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+
+  @media @largeDesktop {
+    padding-bottom: 30px;
+  }
+
+  .profile-card {
+    height: 330px;
+    color: white !important;
+    border-radius: 0px !important;
+    width: 18%;
+    margin: 1%;
+    display: inline-block;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+
+  @desktop {
+    height: 330px;
+  }
+
+    .panel-heading {
+      height: 160px;
+      background-color: #4A525E;
+      border: none;
+      padding: 0px;
+      cursor: pointer !important;
+      justify-content: center;
+
+      .profile-image-container {
+        height: 100%;
+        
+        .maintain-even-aspect-ratio {
+          height: 100%;
+          max-height: 120px;
+          max-width: 120px;
+          width: 100%;
+          
+          .profile-image {
+            cursor: pointer !important;
+          }
+        }
+      }
+    }
+
+    .panel-body {
+      background-color: #59616D;
+      height: 170px;
+      display: flex;
+      justify-content: center;
+      align-content: space-around;
+      flex-flow: column wrap;
+      cursor: pointer !important;
+
+      .name {
+        color: white;
+        font-size: 0.75rem;
+        cursor: pointer !important;
+      }
+
+      .job-title {
+        color: #C6C7C8;
+        font-size: 0.75rem;
+        height: @font-size*@line-height*@lines-to-show; /* Fallback for non-webkit */
+        margin: 15px auto;
+        -webkit-line-clamp: @lines-to-show;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer !important;
+      }
+      .statistic {
+        font-size: 0.75rem;
+        cursor: pointer !important;
+        .number {
+          color: white;
+          cursor: pointer !important;
+        }
+        .item {
+          color: #C6C7C8;
+          cursor: pointer !important;
+        }
+      }
+    }
+  }
+}
+
+.profile-details {
+  width: 100%;
+  height: 100%;
+
+  .person-profile {
+    .row {
+      //display: flex;
+      height: 100%;
+      padding: 10px;
+
+      @media @common {
+        padding: 5px;
+      }
+
+      .one {
+        height: 100%;
+        padding: 0;
+
+        &.col-md-4 {
+          width: 30%;
+        }
+        // display: flex;
+        // flex-direction: column;
+        // flex: 2;
+      }
+      .two {
+        height: 100%;
+        padding: 10px;
+
+        &.col-md-8 {
+          width: 70%;
+        }
+
+        @media @common {
+          padding: 5px;
+        }
+
+        @media @smallDesktop {
+          padding: 5px;
+          height: 100%;
+        }
+
+        @media @xsDesktop {
+          padding: 5px;
+          height: 100%;
+        }
+
+        @media @desktop {
+          height: 100%
+        }
+
+        @media only screen and (min-width: 1680px) and (max-width: 1919px) {
+          height: 100%;
+        }
+
+        .inner2 {
+          height: 100%;
+
+          .projects-panel {
+            height: 100%;
+            background-color: #424952;
+            border: none;
+
+            .panel-heading {
+              background-color: #424952;
+
+              .panel-title {
+                width: 100%;
+              }
+
+              .projectCount {
+                display: inline-block;
+                border-radius: 50%;
+                border: 1px solid grey;
+                height: 40px;
+                width: 40px;
+                text-align: center;
+                font-size: 1rem;
+                font-family: "Helvetica Neue Regular", Helvetica, Arial, sans-serif;
+              }
+
+              .skillCount {
+                display: inline-block;
+                border-radius: 50%;
+                border: 1px solid grey;
+                height: 40px;
+                width: 40px;
+                text-align: center;
+                font-size: 1rem;
+                font-family: "Helvetica Neue Regular", Helvetica, Arial, sans-serif;
+              }
+
+
+              .header-icon-wrapper {
+                float: right;
+                #project_view_selection {
+                  background-color: #333b43;
+                  border: 1px solid #59616D;
+                  border-radius: 5px;
+                  width: 20%;
+                  min-width: 250px;
+                  margin-right: 20px;
+
+                  a {
+                    font-size: 0.8rem;
+                    padding: 4px 18px !important;
+                    width: 50%;
+                  }
+
+                  #skills {
+                    border-radius: 0 3px 3px 0;
+                  }
+
+                  #projects {
+                    border-radius: 3px 0 0 3px;
+                  }
+
+                  .active {
+                    background-color: #59616D;
+                    box-shadow: none;
+                  }
+                }
+
+                .edit-icon {
+                  padding: 0 0 0 10px;
+                }
+              }
+            }
+
+            .projects-body {
+              position: relative;
+              height: 91%;
+              padding: 0;
+              background-color: #424952;
+
+              .legend-wrapper {
+                width: 100%;
+                text-align: center;
+                border-bottom: 1px solid white;
+
+                .legend-group {
+                  text-align: left;
+                  width: 96%;
+                  position: relative;
+                  display: inline-block;
+                  white-space: nowrap;
+                  overflow: auto;
+                  padding: 15px 0;
+
+                  .legend {
+                    display: inline-block;
+                    margin: 0 10px 0 10px;
+                    span {
+                      vertical-align: middle;
+                      font-size: 0.75rem;
+                      display: inline-block;
+                    }
+                    .legend-box {
+                      display: inline-block;
+                      text-align: center;
+                      vertical-align: middle;
+                      width: 15px;
+                      height: 15px;
+                      margin: 0 2px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        //flex: 5;
+      }
+      .three {
+        height: 60%;
+        padding: 10px;
+
+        &.isEditing {
+          height: 70%;
+        }
+
+        @media @common {
+          padding: 5px;
+        }
+
+        @media @windows {
+          height: 65%;
+        }
+
+        @media @xsDesktop {
+          height: 65%;
+        }
+
+        .inner3 {
+          height: 100%;
+          background-color: #424952;
+
+          .profile-bio {
+            height: 55%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-bottom: 1px solid grey;
+            padding: 10px;
+            overflow: hidden;
+
+            &.isEditing {
+              height: 45%;
+            }
+
+            h5 {
+              margin-top: 10px;
+              width: 75%;
+              text-align: center;
+              color: lightgrey;
+
+              @media @windows {
+                height: 14px*1.1*2; /* Fallback for non-webkit */
+                //margin: 15px auto;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+
+              @media @xsDesktop {
+                height: 14px*1.1*2; /* Fallback for non-webkit */
+                //margin: 15px auto;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+            }
+          }
+
+          .profile-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            height: 48%;
+            padding: 20px 0 20px 0;
+
+            &.isEditing {
+              height: 55%;
+              padding: 10px 0 10px 0;
+            }
+
+            .profile-contact {
+              padding: 0 20px 0 20px;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+
+              p {
+                color: lightgrey;
+
+                span {
+                  color: white;
+                  margin-right: 5px;
+                }
+              }
+            }
+
+            .profile-manager {
+              background-color: #3D434B;
+              padding: 10px 5px 10px 20px;
+              margin: 10px 0 10px 0;
+
+              //@media @windows {
+              //  margin: 0;
+              //}
+              //
+              //@media @xsDesktop {
+              //  margin: 0;
+              //}
+
+              &.isEditing {
+                padding: 15px 20px;
+              }
+
+              div {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+
+                &.editingManager {
+                  flex-direction: column;
+                  align-items: flex-start;
+
+                  p {
+                    color: lightgrey;
+                  }
+
+                  .section-input-group {
+
+                    width: 100%;
+                    margin: 10px 0;
+
+                    .item-input-group {
+                      position: relative;
+                      height: 38px;
+                      width: 100%;
+                      float: left;
+
+                      .item-input {
+                        text-align: left;
+                        width: 100%;
+                        border: 1px solid #626d7b;
+                        height: 100%;
+                        margin-top: 0px;
+                        float: left;
+                        color: #ffffff;
+
+                        input {
+                          width: 100%;
+                          background-color: #3d434b;
+                          padding-left: 15px;
+                          border: none;
+                          height: 100%;
+                          color: #ffffff;
+                        }
+
+                        i {
+                          position: absolute;
+                          font-size: 25px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          top: 0px;
+                          right: 0px;
+                          color: #9daec4;
+                          width: 38px;
+                          height: 36px;
+                          background-color: #626d7b;
+                          pointer-events: none;
+                        }
+                      }
+                    }
+                  }
+
+                  .btn-group {
+                    button {
+                      border: 1px solid #1bac72;
+                      border-radius: 0;
+                      width: 100px;
+                    }
+                    .btn-cancel {
+                      background-color: transparent;
+                      color: #1bac72;
+                      margin-left: 5px;
+                    }
+                    .btn-save {
+                      background-color: #1bac72;
+                      color: #3D434B;
+                    }
+                  }
+                }
+
+                span {
+                  color: lightgrey;
+                  height: 20px;
+
+                  span {
+                    color: white;
+                    font-weight: bold;
+                    margin-left: 5px;
+                  }
+                }
+              }
+            }
+
+            .profile-info {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              padding: 0 20px 0 20px;
+
+              p {
+                color: lightgrey;
+              }
+            }
+          }
+        }
+      }
+      .four {
+        height: 40%;
+        padding: 10px;
+
+        &.isEditing {
+          height: 30%;
+        }
+
+        @media @common {
+          padding: 5px;
+        }
+
+        @media @windows {
+          height: 35%;
+        }
+
+        @media @xsDesktop {
+          height: 35%;
+        }
+
+        .inner4 {
+          height: 100%;
+
+          @media @common {
+            height: 100%;
+          }
+
+          @media @windows {
+            height: 100%;
+          }
+
+          @media @smallDesktop {
+            height: 100%;
+          }
+
+          @media @xsDesktop {
+            height: 100%;
+          }
+
+          .vacation-panel {
+            height: 100%;
+            background-color: #424952;
+            border-radius: 0;
+
+            .panel-heading {
+              height: 55px;
+              background-color: #424952;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+
+              .panel-title {
+                @media @common {
+                  font-size: 15px;
+                }
+              }
+
+              .edit-icon {
+                padding: 0;
+              }
+            }
+
+            .panel-body {
+              height: 79%;
+              overflow: auto;
+              padding-top: 0;
+              background-color: #424952;
+
+              @media @common {
+                height: 78%;
+              }
+
+              @media @windows {
+                height: 68%;
+                padding: 0;
+              }
+
+              @media @xsDesktop {
+                height: 68%;
+                padding: 0;
+              }
+
+              &.isEditing {
+                height: 71%;
+                padding: 0;
+              }
+
+              table {
+                tr {
+                  height: 60px;
+                  border-bottom: 1px solid grey;
+
+                  .vacation-dates {
+                    width: 50%;
+                  }
+
+                  .vacation-location {
+                    text-align: right;
+                    width: 50%;
+                    word-wrap: normal;
+                    word-break: break-word;
+                  }
+
+                  td {
+                    border: none;
+                    vertical-align: middle;
+                  }
+                }
+              }
+
+              .add-vacation {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                height: 100%;
+                text-align: center;
+
+                .ion-plus {
+                  display: inline-block;
+                  font-size: 1.2rem;
+                  border-radius: 50%;
+                  border: 1px white solid;
+                  padding: 0.5rem .9rem;
+                  margin-bottom: 0.5rem;
+                  cursor: pointer !important;
+
+                  @media @windows {
+                    height: 40px;
+                    width: 40px;
+                    padding: 0;
+                    text-align: center;
+                    font-size: 1rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
+
+                  @media @xsDesktop {
+                    height: 40px;
+                    width: 40px;
+                    padding: 0;
+                    text-align: center;
+                    font-size: 1rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
+                }
+
+                p {
+                  font-size: 0.8rem;
+                  cursor: pointer !important;
+                }
+              }
+
+            }
+          }
+        }
+        flex: 2;
+      }
+    }
+  }
+
+  .projects {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+
+    .panel {
+	    overflow: hidden;
+      height: 100%;
+      width: 100%;
+      background-color: #424952;
+      border: none;
+      border-radius: 0;
+
+      .panel-heading {
+        background-color: #424952;
+
+        .panel-title {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .projectCount {
+          display: inline-block;
+          border-radius: 50%;
+          border: 1px solid grey;
+          height: 40px;
+          width: 40px;
+          margin-right: 20px;
+          text-align: center;
+          font-size: 1rem;
+          font-family: "Helvetica Neue Regular", Helvetica, Arial, sans-serif;
+        }
+
+        .skillCount {
+          display: inline-block;
+          border-radius: 50%;
+          border: 1px solid grey;
+          height: 40px;
+          width: 40px;
+          margin-right: 20px;
+          text-align: center;
+          font-size: 1rem;
+          font-family: "Helvetica Neue Regular", Helvetica, Arial, sans-serif;
+        }
+
+
+        .header-icon-wrapper {
+          float: right;
+          #project_view_selection {
+            background-color: #333b43;
+            border: 1px solid #59616D;
+            border-radius: 5px;
+            width: 20%;
+            min-width: 250px;
+            margin-right: 20px;
+
+            a {
+              font-size: 0.8rem;
+              padding: 4px 18px !important;
+              width: 51%;
+            }
+
+            #skills {
+              border-radius: 0 3px 3px 0;
+            }
+
+            #projects {
+              border-radius: 3px 0 0 3px;
+              margin-left: 0;
+            }
+
+
+            .active {
+              background-color: #59616D;
+              box-shadow: none;
+            }
+          }
+
+          .prof-skill-list {
+            padding: 0px 0px 0px 25px !important;
+          }
+
+          .edit-icon {
+            padding: 0 0 0 10px;
+          }
+          
+          .util-directive-icon {
+            margin-left: 1px;
+          }
+          
+          .square-button {
+            background: @bg-color-tier-3;
+            height: 38px;
+            font-size: 0.8rem;
+            margin-right: 20px;
+            width: 92px;
+            i {
+              cursor: pointer;
+              float: left;
+              margin-left: 8px;
+              margin-right: 4px;
+            }
+            p {
+              cursor: pointer;
+              float: center;
+              margin-right: 0px;              
+            }
+          }
+          
+          .square-button-toggled {
+            // Case where the button is a toggle.
+            .square-button;
+            border-color: @bg-color-tier-4;
+            background-color: @bg-color-tier-4;
+            width: 92px;
+            p {
+              cursor: pointer;
+              float: right;
+              margin-right: 10px;              
+            }
+          }
+          
+          .verify-check {
+            color: #04ab70;
+          } 
+          
+          .verify-x {
+            color: #fb3535;
+          }
+        }
+      }
+
+      .projects-none {
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-top: 35%;
+
+        .ion-plus {
+          display: inline-block;
+          font-size: 1.2rem;
+          border-radius: 50%;
+          border: 1px white solid;
+          padding: 0.5rem .9rem;
+          margin-bottom: 0.5rem;
+          cursor: pointer !important;
+        }
+
+        p {
+          font-size: 0.8rem;
+          cursor: pointer !important;
+        }
+      }
+
+      .panel-body {
+        background-color: #424952;
+        padding: 0;
+        //padding-bottom: 12%;
+        align-items: center;
+        justify-content: center;
+        height: 90%;
+        overflow: auto;
+
+        @media @desktop {
+          //padding-bottom: 13%;
+        }
+
+        @media @windows {
+          //padding-bottom: 15%;
+          height: 85%;
+        }
+
+        .legend-wrapper {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+          text-align: center;
+          border-bottom: 1px solid grey;
+          margin-bottom: 12px;
+
+          .legend-group {
+            width: 96%;
+            position: relative;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: auto;
+            padding: 5px 0px 6px 0px;
+            text-align: left;
+
+            .legend {
+              display: inline-block;
+              margin: 0 10px 0 10px;
+              span {
+                vertical-align: middle;
+                font-size: 0.75rem;
+                display: inline-block;
+              }
+              .legend-box {
+                display: inline-block;
+                text-align: center;
+                vertical-align: middle;
+                width: 15px;
+                height: 15px;
+                margin: 0 2px;
+              }
+            }
+          }
+        }
+
+        .people-view-proj-list {
+          margin-top: 78px;
+          height: 85%;
+          overflow-y: scroll;
+        }
+
+        .add-skills {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+
+        &.project-list-body {
+          overflow: visible;
+
+          .md-thumb, .md-bar, .md-label {
+            cursor: pointer !important;
+
+            span {
+              cursor: pointer !important;
+            }
+          }
+
+          .section-input-group {
+            position: relative;
+            width: 290px;
+            height: 38px;
+            padding: 0px 15px 0px 15px;
+            margin-top: 0px;
+
+            .item-description {
+              height: 100%;
+              width: 35%;
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              padding-right: 15px;
+              float: left;
+
+              p {
+                overflow: visible;
+                font-size: 16px;
+              }
+            }
+
+            .item-input-group {
+              position: relative;
+              width: 65%;
+              height: 38px;
+              margin-top: 0px;
+              margin-left: auto;
+              margin-right: auto;
+              float: left;
+
+              .item-input {
+                text-align: left;
+                width: 100%;
+                border: 1px solid #626d7b;
+                height: 100%;
+                margin-top: 0px;
+                float: left;
+                color: #ffffff;
+
+                input.people-search-people {
+                  width: 100%;
+                  background-color: #424952;
+                  padding-left: 15px;
+                  border: none;
+                  height: 100%;
+                  color: #ffffff;
+                  font-size: 16px;
+                }
+
+                i.icon {
+                  position: absolute;
+                  font-size: 25px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  top: 0px;
+                  right: 0px;
+                  color: #9daec4;
+                  width: 38px;
+                  height: 37px;
+                  background-color: #626d7b;
+                  pointer-events: none;
+                }
+              }
+
+              .people-panel-list {
+                font-family: "HelveticaNeue-Regular", Helvetica, Arial, sans-serif;
+                color: #ffffff;
+                font-size: 15px;
+                position: absolute;
+                width: 100%;
+                border: 1px #535C67 solid;
+                background-color: #424952;
+                max-height: 485px;
+                color: white;
+                overflow-y: auto;
+                z-index: 99;
+                top: 38px;
+                left: 0px;
+                display: none;
+                box-shadow: 0px 2px 3.6px 0.4px rgba(0, 0, 0, 0.35);
+
+                ul {
+                  list-style-type: none;
+                  padding: 0;
+
+                  li {
+                    margin: 0% !important;
+                    padding: 2% 15px;
+                    cursor: pointer;
+                    line-height: 2;
+                    display: flex;
+                  }
+
+                  li:hover {
+                    transition: all .4s ease;
+                    background-color: #4D555F;
+                  }
+                }
+
+                .filter-select {
+                  color: #0dac72;
+                }
+              }
+            }
+          }
+        }
+
+        .add-skills-mixin;
+
+        table.table {
+          border-collapse: collapse;
+
+          tr {
+            font-family: "Helvetica Neue Regular", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #ebebeb;
+            cursor: pointer !important;
+            //border-bottom: 1px solid grey;
+
+            .skill-name {
+              font-size: 0.8rem;
+              color: #ebebeb;
+              word-break: break-word;
+            }
+
+            span.rating {
+              float: right;
+              font-size: 1rem;
+            }
+
+            .tooltip > .tooltip-inner {
+              white-space: nowrap;
+              max-width: 400px;
+            }
+
+            td {
+              border-top: none;
+              vertical-align: middle;
+              padding: 0.8rem;
+              border-bottom: 1px solid grey;
+
+              span {
+                font-size: 14px;
+                float: left;
+              }
+            }
+
+            td:first-child {
+              width: 3%;
+              border: none;
+            }
+
+            td:last-child {
+              width: 3%;
+              border: none;
+            }
+
+            td:nth-child(2) {
+              width: 5%;
+              padding-left: 0;
+            }
+
+            td:nth-child(4) {
+              padding-right: 0;
+            }
+          }
+
+          tr:last-child {
+            td {
+              border-bottom: none;
+            }
+          }
+
+          tr:hover  td:not(:first-child):not(:last-child) {
+            transition: all .4s ease;
+            background-color: #4D555F;
+          }
+        }
+
+        .project-util-container {
+          padding: 15px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          max-height: 100%;
+
+          @media @windows {
+            max-height: 77%;
+          }
+
+          @media @xsDesktop {
+            max-height: 75%;
+          }
+
+          @media @smallDesktop {
+            max-height: 80%;
+          }
+
+          @media @largeDesktop {
+            max-height: 83%;
+          }
+
+          @media @desktop {
+            max-height: 80%;
+          }
+
+          @media only screen and (min-width: 1680px) and (max-width: 1919px) {
+            max-height: 83%;
+          }
+
+          .bars {
+            cursor: pointer !important;
+          }
+        }
+
+        .axis path, .axis line {
+          fill: none;
+          shape-rendering: crispEdges;
+        }
+        .axis text {
+          fill: white;
+          font-family: sans-serif;
+          font-size: 11px;
+        }
+
+        table.project-list {
+          width: 100%;
+          border-collapse: collapse;
+
+          th {
+            padding: 10px 0px 10px 0px;
+            border-bottom: 1px solid grey;
+
+            span {
+              padding-left: 5px;
+            }
+          }
+
+          th:first-child {
+            border: none;
+          }
+
+          th:last-child {
+            border: none;
+          }
+
+          tr {
+            cursor: pointer;
+
+            td {
+              border-bottom: 1px solid grey;
+              padding: 15px 15px 15px 0px;
+              font-size: 0.8rem;
+              border-top: none;
+
+              div {
+                cursor: pointer !important;
+                height: 100%;
+              }
+            }
+
+            td.project-box {
+              /*float: left;*/
+              //padding-right: 20px;
+
+              div {
+
+                vertical-align: middle;
+                text-align: center;
+                width: 15px;
+                height: 15px;
+              }
+            }
+
+            td:nth-child(1) {
+              border: none;
+            }
+
+            td:last-child {
+              border: none;
+            }
+
+            td.project-name {
+              /*float: left;*/
+              width: 30%;
+
+              @media @common {
+                width: 60%;
+              }
+
+              .project-component {
+                color: #B2B2B2;
+              }
+            }
+
+            .project-worktype {
+              width: 25%;
+            }
+
+            .project-duration {
+              padding-left: 0px !important;
+              padding-right: 0px !important;
+              text-align: left;
+              width: 20%;
+            }
+
+            .project-util {
+              text-align: center;
+              padding-left: 15px
+            }
+          }
+
+          tbody tr:hover {
+            transition: all .4s ease;
+            background-color: #4D555F;
+          }
+
+          tr:first-child {
+
+          }
+
+          tr:last-child {
+            td {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.edit-icon {
+  float: right;
+  font-size: 1rem;
+  padding: 0 10px;
+  color: #ebebeb;
+  cursor: pointer !important;
+}
+
+.ion-android-list {
+  cursor: pointer !important;
+}
+
+.ion-stats-bars {
+  cursor: pointer !important;
+}
+
+.manager-modal-container {
+  .modal-body {
+    padding: 20px !important;
+    .editingManager {
+      .section-input-group {
+        .item-input-group {
+
+          position: relative;
+          width: 100%;
+          margin-top: 0px;
+          margin-left: auto;
+          margin-right: auto;
+          float: left;
+          margin-bottom: 30px;
+
+          p {
+            text-align: left;
+            padding-bottom: 10px;
+          }
+
+          .manager-note {
+            text-align: left;
+            color: #fb6e5f !important;
+          }
+
+          .item-input {
+            text-align: left;
+            width: 100%;
+            border: 1px solid #626d7b;
+            height: 38px;
+            margin-top: 0px;
+            margin-bottom: 10px;
+            float: left;
+            color: #ffffff;
+
+            .user-input img {
+              height: 30px;
+              margin: 0px 0px 0px 15px;
+              border-radius: 50%;
+              position: absolute;
+              top: 4px;
+            }
+
+            input {
+              width: 100%;
+              background-color: #424952;
+              padding-left: 15px;
+              border: none;
+              height: 100%;
+              color: #ffffff;
+            }
+
+            i {
+              position: absolute;
+              font-size: 25px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              top: 0px;
+              right: 0px;
+              color: #9daec4;
+              width: 38px;
+              height: 36px;
+              background-color: #626d7b;
+              pointer-events: none;
+            }
+          }
+
+          .people-panel-list {
+            font-family: "HelveticaNeue-Regular", Helvetica, Arial, sans-serif;
+            color: #ffffff;
+            font-size: 15px;
+            position: absolute;
+            width: 100%;
+            border: 1px #535C67 solid;
+            background-color: #424952;
+            max-height: 485px;
+            color: white;
+            overflow-y: auto;
+            z-index: 99;
+            top: 68px;
+            box-shadow: 0px 2px 3.6px 0.4px rgba(0, 0, 0, 0.35);
+            max-height: 200px;
+            overflow: auto;
+
+            ul {
+              list-style-type: none;
+              padding: 0;
+
+              li {
+                margin: 0% !important;
+                padding: 5px 15px;
+                cursor: pointer;
+                text-align: left;
+                width: 100%;
+                height: 50px;
+
+                .team-details {
+                  float: left;
+                  cursor: pointer !important;
+
+                  .manager-info {
+                    padding: 0px;
+                  }
+
+                  .team-info {
+                    color: #b7b7b7;
+                    font-size: 13px;
+                  }
+                }
+              }
+
+              li:hover {
+                transition: all .4s ease;
+                background-color: #4D555F;
+              }
+            }
+
+            .input-span {
+              padding-right: 7px;
+            }
+
+            .user-list {
+              float: left;
+              cursor: pointer !important;
+
+              img {
+                height: 40px;
+                margin-right: 10px;
+                border-radius: 50%;
+              }
+            }
+
+            &.edit-manager-result {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+        $("input").addClear({
+            right: 10,
+            closeSymbol: "<i class='icon ion-close-circled'></i>",
+            top: 0,
+            hideOnBlur: true
+        });
+    });
+</script>
+
+<div class="login" ng-show="vm.showLogin">
+
+    <div class="clear-loading login-spinner" ng-show="loading">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="row">
+
+        <div class="col-xs-1 col-sm-4"></div>
+
+        <div class="col-xs-10 col-sm-4">
+
+            <form class="form-login" novalidate>
+                <h1 class="form-login-heading">
+                    <!-- <span class="ion-social-codepen-outline" data-pack="default" data-tags="icon" style="font-size:270%; vertical-align: middle;"></span> -->
+                    <span><img src="./assets/images/favicons/opin_logo.png" style="height: 55px;"></span>
+                    &nbsp;Operational <span style="font-weight: normal;">Insight</span>
+                </h1>
+                <div class="form-entry">
+                    <div class="error">{{vm.err_message}}</div>
+
+                    <div class="intranetIDBox">
+                        <label for="inputEmail" class="sr-only">Email address</label>
+                        <input class="form-control inputEmail"
+                               tabindex="1"
+                               type="text"
+                               id="inputEmail"
+                               placeholder="Intranet ID"
+                               ng-model="vm.userId">
+                    </div>
+                    <div class="passwordBox">
+                        <label for="inputPassword" class="sr-only">Password</label>
+                        <input tabindex="2" type="password" id="inputPassword" class="form-control inputPassword" placeholder="Password">
+                    </div>
+                    <div class="disclaimer">
+                        <b>IBM CONFIDENTIAL</b><br>Discover includes data classified as IBM Confidential. This information is subject to IBM's Business Conduct Guidelines. IBM data privacy policies and in some cases non-disclosure agreements. This information must be used for management approved business purpose only and must not be disclosed to any third party.<br>Copyright &copy; IBM Corp. 2015.
+                    </div>
+                    <div class="footer">
+                        <div class="icon-container" data-name="bbq"><i class="es-icons lab-logo"></i></div>
+                        <p></p>
+                    </div>
+                </div>
+
+                <button tabindex="3" class="btn btn-lg btn-block btn-login" ng-click="vm.login()">Login</button>
+            </form>
+        </div>
+        <div class="col-xs-1 col-sm-4"></div>
+    </div>
+
+</div>

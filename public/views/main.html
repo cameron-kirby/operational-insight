@@ -1,0 +1,267 @@
+<div style="height: 100%">
+
+  <!-- header navbar-->
+  <nav class="navbar navbar-default header">
+    <div class="container-fluid">
+      <div style="display: flex;align-items:center;height:100%;">
+        <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleMenu()">
+          <md-icon md-svg-icon="assets/images/menu.svg" style="color:white;"></md-icon>
+        </md-button>
+        <div class="navbar-header" ng-click="goToProjects()">
+          <!-- <a class="ion-social-codepen-outline"></a> -->
+          <span class="opin-logo"><img src="./assets/images/favicons/opin_logo.png"></span>
+          <span>Operational
+            <strong>Insight</strong>
+          </span>
+
+          <div>{{myManagerTeam}}</div>
+        </div>
+      <!-- </div> -->
+
+      <!--search bar-->
+      <div class="navbar-right" search-bar ng-class="{'bar-slide-in': search}" click-off>
+        <a class="search ion-search" aria-hidden="true" ng-click="clickSearch()"></a>
+
+        <input class="search-input angular-animate" type="text" name="search-terms" id="search-terms" placeholder="Search..." ng-model="query">
+
+        <div class="search-app-result angular-animate" ng-if="query && (people.length > 0 || projects.length > 0 || skills.length > 0)">
+
+          <h5 class="result-people-header" ng-if="people.length > 0">PEOPLE</h5>
+          <ul class="search-result-people container-fluid">
+            <li ng-repeat="person in people | limitTo: limitNum" class="search-result-item row" ui-sref="home.people.profile({userID: person.email})">
+
+              <div class="profile-image col-md-2" ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/' + person.email + '.jpg?s=115)'}"></div>
+              <div class="col-md-10 nav-search-details">
+                <p class="person-name">
+                  {{person.fname + " " + person.lname}}
+                </p>
+
+                <p class="second-field">
+                  {{person.job_title | truncate:66}}
+                </p>
+              </div>
+
+            </li>
+          </ul>
+          <h5 class="result-project-header" ng-if="projects.length > 0">PROJECTS</h5>
+          <ul class="search-result-projects container-fluid">
+            <li ng-repeat="project in projects | limitTo: limitNum" class="search-result-item row" ui-sref="home.projects.detail({projectID: project.proj_id,filter:'today'})">
+
+              <div class="project-image col-md-2" ng-style="{'background-color': colorMapping[project.proj_id]}">
+                <span>
+                  {{project.name | acronym}}
+                </span>
+              </div>
+              <div class="col-md-10 nav-search-details">
+
+                <p class="project-name">
+                  {{project.name}}
+                </p>
+
+                <p class="description second-field">
+                  {{project.description | truncate:33}}
+                </p>
+              </div>
+
+            </li>
+          </ul>
+          <h5 class="result-project-header" ng-if="skills.length > 0">SKILLS</h5>
+          <ul class="search-result-projects container-fluid">
+            <li ng-repeat="skill in skills | limitTo: limitNum" class="search-result-item row" ng-click="goToSkillDetail(skill.skill_id)">
+
+              <div class="skill-image col-md-2" ng-style="{'background-color': skillColorMapping[skill.category_id]}">
+                <span>
+                  {{skill.name | acronym}}
+                </span>
+              </div>
+              <div class="col-md-10 nav-search-details">
+
+                <p class="project-name">
+                  {{skill.name}}
+                </p>
+
+                <p class="description second-field">
+                  {{skill.description | truncate:33}}
+                </p>
+              </div>
+
+            </li>
+          </ul>
+          <div class="show-more" ng-if="!showMoreClicked && query && (projects.length > 2 || people.length > 2 || skills.length > 2)" ng-click="showMore()">
+            <span class="show-more-title second-field">Show More</span>
+            <span class="ion-chevron-down show-more-arrow second-field"></span>
+          </div>
+        </div>
+
+      </div>
+      </div>
+    </div>
+    <!-- End of header container -->
+  </nav>
+
+  <div class="container-fluid">
+    <div>
+      <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="menu">
+        <md-content>
+          <div class="sidenav-header">
+            <div class="profile-image" ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/'+ person._id +'.jpg?s=115)'}" ng-click="goToProfile(person._id)"></div>
+            <span id="name-span">{{person.fname + ' ' + person.lname}}</span>
+            <span id="id-span">{{person._id}}</span>
+          </div>
+          <div class="sidenav-body">
+            <md-list>
+              <md-list-item class="md-1-line" ng-click="switchTeam()">
+                <md-icon class="ion-arrow-swap"></md-icon>
+                <div class="md-list-item-text" layout="column">
+                  <h4>Switch Teams</h4>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-1-line" ng-click="goToSettings()" ng-if="person.role == 'Admin'" ng-class="{isCurrentView: currentView.name == 'Settings'}">
+                <md-icon class="ion-gear-a"></md-icon>
+                <div class="md-list-item-text" layout="column">
+                  <h4>Settings</h4>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-1-line" ng-click="goToPeople()" ng-class="{isCurrentView: currentView.name == 'People'}">
+                <md-icon class="ion-ios-people"></md-icon>
+                <div class="md-list-item-text" layout="column">
+                  <h4>People</h4>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-1-line" ng-click="goToSkills()" ng-class="{isCurrentView: currentView.name == 'Skills'}">
+                <md-icon class="ion-trophy"></md-icon>
+                <div class="md-list-item-text" layout="column">
+                  <h4>Skills</h4>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-1-line" ng-click="goToProjects()" ng-class="{isCurrentView: currentView.name == 'Projects'}">
+                <md-icon class="ion-hammer"></md-icon>
+                <div class="md-list-item-text" layout="column">
+                  <h4>Projects</h4>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-1-line" ng-click="logout()">
+                <md-icon class="ion-log-out"></md-icon>
+                <div class="md-list-item-text" layout="column">
+                  <h4>Log Out</h4>
+                </div>
+              </md-list-item>
+            </md-list>
+          </div>
+          <div class="sidenav-footer">
+            <i class="es-icons lab-logo"></i>
+            <span>An <span>Enterprise Services Innovation Lab</span> Product<span>
+          </div>
+        </md-content>
+      </md-sidenav>
+    </div>
+
+    <!-- Angular map content -->
+    <div class="main-content" style="height: 100%;overflow: visible;" ng-class="{'col-lg-12': isFullSize, 'col-lg-9': !isFullSize}" ui-view="mapView"></div>
+
+    <!--Widget Group-->
+    <div class="col col-lg-3 widget-group" style="height: 100%" ng-show="!isFullSize" ng-controller="WidgetsController as widgetVM">
+      <accordion close-others="false" style='height: 100%'>
+
+        <!--Angular Clock Widget-->
+        <accordion-group is-open="widgetVM.ClockWidget.status" class="clock-widget angular-animate">
+          <accordion-heading>
+            World Clock
+            <i class="pull-right glyphicon plus-minus" ng-class="{'glyphicon-plus': !widgetVM.ClockWidget.status, 'glyphicon-minus': widgetVM.ClockWidget.status}"></i>
+          </accordion-heading>
+          <!--Widget content-->
+          <div class="row clock-row">
+            <div class="col-xs-4" style="height: 100%">
+              <ds-widget-clock theme="grey" gmt-offset="-5" show-analog></ds-widget-clock>
+              <p>RTP (EDT)</p>
+              <ds-widget-clock show-digital show-am-pm theme="grey" digital-format="'a'" gmt-offset="-5"></ds-widget-clock>
+            </div>
+            <div class="col-xs-4" style="height: 100%">
+              <ds-widget-clock theme="grey" gmt-offset="-6" show-analog></ds-widget-clock>
+              <p>Austin (CDT)</p>
+              <ds-widget-clock show-digital show-am-pm theme="grey" digital-format="'a'" gmt-offset="-6"></ds-widget-clock>
+            </div>
+            <div class="col-xs-4" style="height: 100%">
+              <ds-widget-clock style="height: 20%!important;" theme="grey" gmt-offset="-8" show-analog></ds-widget-clock>
+              <p style="font-size: 0.65rem">San Jose (PDT)</p>
+              <ds-widget-clock show-digital show-am-pm theme="grey" digital-format="'a'" gmt-offset="-8"></ds-widget-clock>
+            </div>
+          </div>
+          <div class="row clock-row">
+            <div class="col-xs-4">
+              <ds-widget-clock theme="grey" gmt-offset="-6" show-analog></ds-widget-clock>
+              <p>Guadalajara</p>
+              <ds-widget-clock show-digital show-am-pm theme="grey" digital-format="'a'" gmt-offset="-6"></ds-widget-clock>
+            </div>
+            <div class="col-xs-4">
+              <ds-widget-clock theme="grey" gmt-offset="8" show-analog></ds-widget-clock>
+              <p>Singapore</p>
+              <ds-widget-clock show-digital show-am-pm theme="grey" digital-format="'a'" gmt-offset="8"></ds-widget-clock>
+            </div>
+            <div class="col-xs-4">
+              <ds-widget-clock theme="grey" gmt-offset="0" show-analog></ds-widget-clock>
+              <p>London</p>
+              <ds-widget-clock show-digital show-am-pm theme="grey" digital-format="'a'" gmt-offset="0"></ds-widget-clock>
+            </div>
+          </div>
+        </accordion-group>
+
+        <!--Angular Out-of-Office Widget-->
+        <accordion-group is-open="widgetVM.OutOfOffice.status" class="out-of-office-widget angular-animate">
+          <accordion-heading class="angular-animate">
+            Out of Office (Next 7 days)
+            <i class="pull-right glyphicon plus-minus" ng-class="{'glyphicon-plus': !widgetVM.OutOfOffice.status, 'glyphicon-minus': widgetVM.OutOfOffice.status}"></i>
+          </accordion-heading>
+          <!--Widget content-->
+          <table ng-if="widgetVM.OutOfOffice.list || widgetVM.OutOfOffice.list > 0" class="table">
+            <!--table content-->
+            <tr ng-repeat="item in widgetVM.OutOfOffice.list">
+              <td style="width: 100px;">
+                <div class="profile-image" ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/'+item._id+'.jpg?s=115)'}" ui-sref="home.people.profile({userID: item._id})"></div>
+              </td>
+              <td style="width: 100%;">
+                <p ui-sref="home.people.profile({userID: item._id})">{{(item.fname | capitalize) + " " +
+                                (item.lname | capitalize)}}</p>
+
+                <p class="time-geo-info" ng-repeat="vacation in item.vacations">
+                  {{vacation.start_date == vacation.end_date? (vacation.start_date | date: 'M/d/yy') : (vacation.start_date | date: 'M/d/yy') + " - " + (vacation.end_date | date: 'M/d/yy')}}
+                  @
+                  {{vacation.location}}</p>
+              </td>
+            </tr>
+          </table>
+          <div ng-if="widgetVM.oofLoading === false && (!widgetVM.OutOfOffice || widgetVM.OutOfOffice.list == 0)" class="no-records">
+            No Vacations
+          </div>
+        </accordion-group>
+      </accordion>
+    </div>
+  </div>
+
+  <md-fab-speed-dial md-no-ink>
+    <md-fab-trigger>
+      <md-button aria-label="menu" class="md-fab" ng-click="utilization()">
+        <md-icon class="ion-edit"></md-icon>
+      </md-button>
+    </md-fab-trigger>
+  </md-fab-speed-dial>
+
+</div>
+
+<script id="template/accordion/accordion-group.html" type="text/ng-template">
+  <div class="panel panel-default" ng-class="{'panel-open': isOpen}">
+    <div class="spinner-wrapper" style="display:none;">
+      <div class="clear-loading spinner" style="display:none;">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a href tabindex="0" class="accordion-toggle" ng-click="toggleOpen()" accordion-transclude="heading"><span ng-class="{'text-muted': isDisabled}">{{heading}}</span></a>
+      </h4>
+    </div>
+    <div class="panel-collapse collapse" collapse="!isOpen">
+      <div class="panel-body" ng-transclude></div>
+    </div>
+  </div>
+</script>

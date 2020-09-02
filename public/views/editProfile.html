@@ -1,0 +1,749 @@
+<div class="modal-header">
+    <h3 class="modal-title" ng-if="tab != 'AddProject' && tab != 'Details'">Edit {{tab}}</h3>
+
+    <h3 class="modal-title" ng-if="tab == 'Details'">Edit Out of Office</h3>
+
+    <h3 class="modal-title" ng-class="{'back-title':  tab == 'AddProject'}" ng-if="tab == 'AddProject'"
+        ui-sref="home.people.profile.edit.tab({edit:'Projects'})"><i
+            class="ion-ios-arrow-back"></i> New Project</h3>
+    <span class="ion-close" ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+    <!--Detail-->
+    <div class="edit-detail" ng-if="tab == 'Details' && dataLoaded" ng-controller="UpdateDetailController">
+        <div class="vacation-info">
+            <table>
+                <thead class="table-header">
+                  <th>OUT OF OFFICE DATES</th>
+                  <th>LOCATION</th>
+                  <th>CONTACT</th>
+                  <th>REASON</th>
+                  <th style="border-bottom:none">
+                      <!--placeholder for plus/minus button-->
+                  </th>
+                  <th>
+                    <!--placeholder for edit button-->
+                  </th>
+                </thead>
+                <tbody>
+                <tr class="spacer"></tr>
+                <tr class="table-input-row">
+                    <td>
+                        <div class="item item-input"
+                             ng-class="{vacationError: vacationDatesError}">
+                            <rangedatepicker date-format="MM/dd/yy" date-min-limit="{{yesterday}}">
+                                <input class="vacation-input" id="vacation-dates" type="text" placeholder="Select Dates"
+                                       ng-model="vacationInput"/>
+                                <i class="icon ion-ios-calendar-outline placeholder-icon"></i>
+                            </rangedatepicker>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="item item-input">
+                            <input class="vacation-input" id="vacation-location" type="text"
+                                   placeholder="City, State, etc." ng-model="vacationLocation" ng-maxlength="200"
+                                   maxlength="200">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="item item-input">
+                            <input class="vacation-input" id="vacation-contact" type="text"
+                                   placeholder="Phone, Email, etc." ng-model="vacationContact" ng-maxlength="200"
+                                   maxlength="200">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="item item-input">
+                            <input class="vacation-input" id="vacation-reason" type="text"
+                                   placeholder="Reason" ng-model="vacationReason" ng-maxlength="200"
+                                   maxlength="200">
+                        </div>
+                    </td>
+                    <td>
+                        <span class="ion-plus" ng-click="addVacation()"></span>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="table-input-row" ng-repeat="v in person.vacations | orderBy: 'start_date'" style="height: 55px;border-bottom: 1px solid #636F7C;">
+                    <td ng-if='!v.isEdit'>
+                        {{v.start_date === v.end_date?
+                        (v.start_date | amDateFormat: 'MM/DD/YY') :
+                        (v.start_date | amDateFormat: 'MM/DD/YY') + " - " + (v.end_date | amDateFormat:
+                        'MM/DD/YY')}}
+                    </td>
+                    <td ng-if='v.isEdit'>
+                        <div class="item item-input" style="height:35px"
+                             ng-class="{vacationError: vacationDatesError}">
+                            <rangedatepicker date-format="MM/dd/yy" date-min-limit="{{yesterday}}">
+                                <input id="date-vacation-{{$index}}" class="vacation-input" type="text" placeholder="Select Dates"
+                                       ng-model="v.dates" ng-change="editVacation($index)"/>
+                                <i class="icon ion-ios-calendar-outline placeholder-icon"></i>
+                            </rangedatepicker>
+                        </div>
+                    </td>
+                    <td ng-if='!v.isEdit'>
+                        {{v.location || "NA"}}
+                    </td>
+                    <td ng-if='v.isEdit' >
+                        <div class="item item-input">
+                            <input type="text" class="vacation-input" placeholder="City, State, etc."
+                                   ng-model="v.location" ng-maxlength="200"
+                                   maxlength="200"/>
+                        </div>
+                    </td>
+                    <td ng-if='!v.isEdit'>
+                        {{v.contact_info || "NA"}}
+                    </td>
+                    <td ng-if='v.isEdit'>
+                        <div class="item item-input">
+                            <input type="text" class="vacation-input" placeholder="Phone, Email, etc."
+                                   ng-model="v.contact_info" ng-maxlength="200"
+                                   maxlength="200"/>
+                        </div>
+                    </td>
+                    <td ng-if='!v.isEdit'>
+                        {{v.reason || "NA"}}
+                    </td>
+                    <td ng-if='v.isEdit'>
+                        <div class="item item-input">
+                            <input type="text" class="vacation-input" placeholder="Reason" ng-model="v.reason"
+                                   ng-maxlength="200"
+                                   maxlength="200"/>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="ion-minus" style="font-size: 1.2rem;float: right;cursor: pointer !important;"
+                              ng-click="removeVacation($index)"></span>
+                    </td>
+                    <td>
+                        <span ng-if="v.editable" class="ion-edit" ng-click="changeShow($index)"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--Skill-->
+    <div class="edit-skill" ng-if="tab == 'Skills' && dataLoaded" ng-controller="SearchSkillsController">
+        <table>
+            <!--table heading-->
+            <tr class="table-header">
+                <th colspan="2">
+                    <span class="col-md-6">SKILLS</span>
+                    <span>CATEGORY</span>
+                </th>
+                <!-- <th>CATEGORY</th> -->
+                <th>PROFICIENCY &nbsp;
+                <span class="ion-help-circled custom-tool-tip" data-toggle="tooltip" data-placement="bottom"
+                      data-html="true"
+                      title="<div class='tooltipHeader'>
+                            <div class='col1'>
+                                <p>SCORE</p>
+                            </div>
+                            <div class='col2'>
+                                <p>PROFICIENCY LEVEL</p>
+                            </div>
+                            <div class='col3'>
+                                <p>DESCRIPTION</p>
+                            </div>
+                       </div>
+                       <div class='tooltipBody'>
+                            <div class='tooltipRow'>
+                                <div class='col1'>
+                                    <p>1</p>
+                                </div>
+                                <div class='colBody2'>
+                                    <p>Fundamental Awareness (basic knowledge)</p>
+                                </div>
+                                <div class='colBody3'>
+                                    <p>You have a common knowledge or an understanding of basic techniques and concepts.</p>
+                                </div>
+                            </div>
+                            <div class='separator'></div>
+                            <div class='tooltipRow'>
+                                <div class='col1'>
+                                    <p>2</p>
+                                </div>
+                                <div class='colBody2'>
+                                    <p>Novice (limited experience)</p>
+                                </div>
+                                <div class='colBody3'>
+                                    <p>You have the level of experience gained in a classroom and/or experimental scenarios or as a trainee on-the-job. You are expected to need help when performing this skill.</p>
+                                </div>
+                            </div>
+                            <div class='separator'></div>
+                            <div class='tooltipRow'>
+                                <div class='col1'>
+                                    <p>3</p>
+                                </div>
+                                <div class='colBody2'>
+                                    <p>Intermediate (practical application)</p>
+                                </div>
+                                <div class='colBody3'>
+                                    <p>You are able to successfully complete tasks in this competency as requested. Help from an expert may be required from time to time, but you can usually perform the skill independently.</p>
+                                </div>
+                            </div>
+                            <div class='separator'></div>
+                            <div class='tooltipRow'>
+                                <div class='col1'>
+                                    <p>4</p>
+                                </div>
+                                <div class='colBody2'>
+                                    <p>Advanced (applied theory)</p>
+                                </div>
+                                <div class='colBody3'>
+                                    <p>You can perform the actions associated with this skill without assistance. You are certainly recognized within your immediate organization as 'a person to ask' when difficult questions arise regarding this skill.</p>
+                                </div>
+                            </div>
+                            <div class='separator'></div>
+                            <div class='tooltipRow'>
+                                <div class='col1'>
+                                    <p>5</p>
+                                </div>
+                                <div class='colBody2'>
+                                    <p>Expert (recognized authority)</p>
+                                </div>
+                                <div class='colBody3'>
+                                    <p>You are known as an expert in this area. You can provide guidance, troubleshoot and answer questions related to this area of expertise and the field where the skill is used.</p>
+                                </div>
+                            </div>
+                        </div>">
+                    </span></th>
+                <th>
+                    <!--placeholder for plus/minus button-->
+                </th>
+            </tr>
+
+            <!--table content-->
+            <tr class="table-input-row">
+                <td colspan="2">
+                    <div class="item item-input" ng-hide="selectedSkill" click-off>
+                        <input class="modal-search show-filtered-skills" type="text" name="search-terms"
+                               id="search-terms"
+                               placeholder="Search skills..." ng-model="querySkill" ng-click="getAllSkills()">
+                        <i class="icon ion-search placeholder-icon"></i>
+                    </div>
+
+                    <div class="item item-input show-filtered-skills" ng-show="selectedSkill"
+                         ng-click="getFilteredSkills()" click-off>
+                        <span class="selected-skill">
+                            <span class="skill-name" style="width:50%">{{selectedSkill.name}}</span>
+                            <span class="ion-record skill-bullet"
+                                  ng-style="{'color': colorMapping[selectedSkill.category_id]}"></span>
+                            <span class="skill-category">{{selectedSkill.category}}</span>
+                        </span>
+                        <i class="icon ion-search placeholder-icon"></i>
+                    </div>
+                    <!--search result-->
+                    <div class="search-result angular-animate" id="search-result-skills"
+                         ng-if="filteredSkills.length > 0">
+
+                        <ul class="search-result-skill container-fluid">
+                            <li ng-repeat="skill in filteredSkills"
+                                class="search-result-item" ng-click="selectSkill(skill._id)">
+                                <span class="skill-name" style="width:50%">{{skill.name}}</span>
+                                <span class="ion-record skill-bullet"
+                                      ng-style="{'color': colorMapping[skill.category_id]}"></span>
+                                <span class="skill-category">{{skill.category}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td>
+                    <span class="rating">
+                        <opin-custom-rating ng-model="selectedSkill.currentProficiency.rating"
+                                            readonly="isReadonly"></opin-custom-rating>
+                    </span>
+                </td>
+                <td>
+                    <span class="ion-plus" ng-click="addSkill()"></span>
+                </td>
+            </tr>
+            <tr ng-show="showerrorMessage">
+                <td style="color:#fb6e5f">Proficiency should be at least one star</td>
+            </tr>
+            <tr class="table-skill-row" ng-repeat="skill in ownedSkills" ng-if="ownedSkills.length > 0">
+                <td colspan="2">
+                    <span class="skill-name">{{skill.name}}</span>
+                    <span class="ion-record skill-bullet" ng-style="{'color': colorMapping[skill.category_id]}"></span>
+                    <span class="skill-category">{{skill.category}}</span>
+                </td>
+                <!-- <td>
+                    <span class="ion-record skill-bullet" ng-style="{'color': colorMapping[skill.category_id]}"></span>
+                    <span class="skill-category">{{skill.category}}</span>
+                </td> -->
+                <td>
+                    <span class="rating">
+                        <opin-custom-rating class="testing" ng-model="skill.currentProficiency.rating"
+                                            readonly="false"></opin-custom-rating>
+                    </span>
+                </td>
+                <td>
+                    <span class="ion-minus" ng-click="removeSkill($index)"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--Detail-->
+    <div ng-if="tab == 'Projects' && dataLoaded" ng-controller="UpdateProjectController">
+        <div class="edit-util-filter-row" ng-if="tab == 'Projects'">
+            <div class="section-input-group people-input-group">
+                <div class="item-description">
+                    <p>Year:</p>
+                </div>
+                <div class="item-input-group">
+                    <div class="item-input">
+                        <input class="people-search-people people-drop" type="text" ng-model="yearFilter"
+                               ng-click="showYearFilter()" readonly click-off>
+                        <i class="icon ion-arrow-down-b placeholder-icon ion-icon"></i>
+                    </div>
+                    <!-- filter dropdown -->
+                    <div class="people-panel-list filter-list">
+                        <ul>
+                            <li ng-repeat="year in yearFilters" ng-click="applyYearFilter(year)"
+                                ng-class="{'filter-select': year === yearFilter}">
+                                {{year}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="edit-projects">
+            <table>
+                <thead class="table-header">
+                <th ng-click="sortType = 'start_date'; sortReverse = !sortReverse">DATE RANGE<span
+                        ng-show="sortType == 'start_date' && sortReverse"
+                        class="ion-android-arrow-dropdown"></span><span
+                        ng-show="sortType == 'start_date' && !sortReverse" class="ion-android-arrow-dropup"></span></th>
+                <th ng-click="sortType = 'name'; sortReverse = !sortReverse">PROJECTS<span
+                        ng-show="sortType == 'name' && sortReverse" class="ion-android-arrow-dropdown"></span><span
+                        ng-show="sortType == 'name' && !sortReverse" class="ion-android-arrow-dropup"></span></th>
+                <th ng-click="sortType = 'component'; sortReverse = !sortReverse">COMPONENT<span
+                        ng-show="sortType == 'component' && sortReverse" class="ion-android-arrow-dropdown"></span><span
+                        ng-show="sortType == 'component' && !sortReverse" class="ion-android-arrow-dropup"></span></th>
+                <th ng-click="sortType = 'job_role'; sortReverse = !sortReverse">JOB ROLE<span
+                        ng-show="sortType == 'job_role' && sortReverse" class="ion-android-arrow-dropdown"></span><span
+                        ng-show="sortType == 'job_role' && !sortReverse" class="ion-android-arrow-dropup"></span></th>
+                <th ng-click="sortType = 'work_type'; sortReverse = !sortReverse">WORK TYPE<span
+                        ng-show="sortType == 'work_type' && sortReverse" class="ion-android-arrow-dropdown"></span><span
+                        ng-show="sortType == 'work_type' && !sortReverse" class="ion-android-arrow-dropup"></span></th>
+                <th ng-click="sortType = 'percentage'; sortReverse = !sortReverse">UTILIZATION (%)<span
+                        class="ion-help-circled"></span><span ng-show="sortType == 'percentage' && sortReverse"
+                                                              class="ion-android-arrow-dropdown"></span><span
+                        ng-show="sortType == 'percentage' && !sortReverse" class="ion-android-arrow-dropup"></span></th>
+                <th>
+                    <!--placeholder for plus/minus button-->
+                </th>
+                <th>
+                    <!--placeholder for edit button-->
+                </th>
+                </thead>
+                <tbody>
+                <!-- utilization input row -->
+                <tr class="table-input-row">
+                    <td>
+                        <div class="item item-input" ng-class="{projectError: projectDateError}">
+                            <rangedatepicker date-format="MM/dd/yy" date-min-limit="{{currentDate}}">
+                                <input class="project-dates" id="project-dates" type="text" placeholder="Select Dates"
+                                       ng-model="projectDates" ng-change="changeUtilDate()"/>
+                                <i class="icon ion-ios-calendar-outline placeholder-icon"></i>
+                            </rangedatepicker>
+                        </div>
+                    </td>
+                    <td class="search-projects-td">
+                        <div class="item item-input" ng-class="{projectError: selectedProjectError}">
+                            <input class="project-search" type="text" name="project-search-terms"
+                                   id="project-search-terms" placeholder="Search projects..." ng-model="queryProject" ng-click="showProjects()">
+                            <i class="icon ion-search placeholder-icon"></i>
+                        </div>
+                        <!--search result-->
+                        <div class="search-result angular-animate" id="search-result-project" style="display: none;"
+                             click-off>
+                            <ul class="search-result-project container-fluid">
+                                <li ng-click="gotoAddProject()"><span class="ion-plus"></span> New Project</li>
+                                <li ng-repeat="p in filteredProjects"
+                                    class="search-result-item" ng-click="selectProject(p.proj_id)">
+                                    <span class="project-name">{{p.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <!-- component -->
+                    <td>
+                        <div class="item item-input">
+                            <input type="text" placeholder="Component" class="project-component"
+                                   ng-model="projectComponent">
+                        </div>
+                    </td>
+                    <!--Job Role-->
+                    <td class="search-projects-td">
+                        <div class="item item-input" ng-class="{jobRoleError: selectedJobRoleError}">
+                            <input id="job-role-search" class="project-search" type="text" placeholder="Job Role"
+                                   ng-model="queryJobRole" ng-click="getJobRoles()" readonly>
+                            <i class="icon ion-arrow-down-b placeholder-icon"></i>
+                        </div>
+                        <!--search result-->
+                        <div class="search-jobrole-result angular-animate" ng-if="jobRoles.length > 0" click-off>
+                            <ul class="container-fluid">
+                                <li ng-repeat="j in jobRoles"
+                                    class="search-result-item" ng-click="selectJobRole(j._id)">
+                                    <span class="jobrole-name">{{j.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <!--work type-->
+                    <td class="search-projects-td">
+                        <div class="item item-input" ng-class="{workTypeError: selectedWorkTypeError}">
+                            <input id="work-type-search" class="project-search" type="text" placeholder="Work Type"
+                                   ng-model="queryWorkType" ng-click="getWorkTypes()" readonly>
+                            <i class="icon ion-arrow-down-b placeholder-icon"></i>
+                        </div>
+
+                        <!--search result-->
+                        <div class="search-worktype-result angular-animate" ng-if="workTypes.length > 0" click-off>
+                            <ul class="container-fluid">
+                                <li ng-repeat="w in workTypes"
+                                    class="search-result-item" ng-click="selectWorkType(w._id)">
+                                    <span class="worktype-name">{{w.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <input class="util-slider" id="price" type="range" min="0" max="100" step="5" value="0"
+                               style="width:70%;margin-right:10px;float:left;" ng-model="rangeSlider"/>
+                        <span ng-class="{sliderError: rangeSliderError}">{{rangeSlider}}%</span>
+                    </td>
+                    <td class="edit-proj-add">
+                        <span class="ion-plus" ng-click="addProject()"></span>
+                    </td>
+                    <td>
+                        <span></span>
+                    </td>
+                </tr>
+                <!-- utilizations list -->
+                <tr class="table-row" ng-repeat="u in personUtil | orderBy:sortType:!sortReverse">
+                    <td ng-if='!u.isEdit'>
+                        <div>
+                            {{u.start_date | amDateFormat: 'MM/DD/YY'}} - {{u.end_date | amDateFormat: 'MM/DD/YY'}}
+                        </div>
+                    </td>
+                    <td ng-if='u.isEdit'>
+                        <div class="item-input" style="height:35px">
+                            <rangedatepicker date-format="MM/dd/yy" date-min-limit="{{yesterday}}">
+                                <input class="utilization-edit" type="text" placeholder="Select Dates"
+                                       ng-model="u.daterange" id="date-range-{{u.proj_id}}-{{$index}}"
+                                       ng-change="editUtil($index, u.ref, u.proj_id)"/>
+                                <i class="icon ion-ios-calendar-outline placeholder-icon"></i>
+                            </rangedatepicker>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            {{u.name}}
+                        </div>
+                    </td>
+                    <td ng-if='u.isEdit'>
+                        <div class="item item-input">
+                            <input type="text" placeholder="Component" class="project-component"
+                                   ng-model="u.component">
+                        </div>
+                    </td>
+                    <td ng-if='!u.isEdit'>
+                        <div>
+                            {{u.component || "NA"}}
+                        </div>
+                    </td>
+                    <td ng-init="showme = false" ng-if='u.isEdit'>
+                        <div class="item item-input edit-role" ng-class="{jobRoleError: selectedJobRoleError}">
+                            <input ng-attr-id="{{'job-role-search-' + $index}}" class="project-search" type="text"
+                                   placeholder="Job Role"
+                                   ng-model="u.job_role" ng-click="showme = true" readonly>
+                            <i class="icon ion-arrow-down-b placeholder-icon"></i>
+                        </div>
+                        <!--search result-->
+                        <div ng-attr-id="{{'editJobRole-' + $index}}" class="edit-jobrole-result angular-animate"
+                             ng-show="showme"  click-off="$index">
+                            <ul class="container-fluid">
+                                <li ng-repeat="j in allJobRoles"
+                                    class="search-result-item" ng-click="u.job_role = j.name; $parent.showme = false">
+                                    <span class="jobrole-name">{{j.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- {{u.job_role || "NA"}} -->
+                    </td>
+                    <td ng-if='!u.isEdit'>
+                        {{u.job_role || "NA"}}
+                    </td>
+                    <td ng-init="showmewt = false" ng-if='u.isEdit'>
+                        <div class="item item-input edit-worktype" ng-class="{jobRoleError: selectedJobRoleError}">
+                            <input ng-attr-id="{{'work-type-search-' + $index}}" class="project-search" type="text"
+                                   placeholder="Work Type"
+                                   ng-model="u.work_type" ng-click="showmewt = true" readonly>
+                            <i class="icon ion-arrow-down-b placeholder-icon"></i>
+                        </div>
+                        <!--search result-->
+                        <div ng-attr-id="{{'editWorkType-' + $index}}" class="edit-worktype-result angular-animate"
+                             ng-show="showmewt" click-off="$index">
+                            <ul class="container-fluid">
+                                <li ng-repeat="w in allWorkTypes"
+                                    class="search-result-item"
+                                    ng-click="u.work_type = w.name; $parent.showmewt = false">
+                                    <span class="worktype-name">{{w.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- {{u.job_role || "NA"}} -->
+                    </td>
+                    <td ng-if='!u.isEdit'>
+                        <div>
+                            {{u.work_type || "NA"}}
+                        </div>
+                    </td>
+                    <td style="padding-left:0;" ng-if='u.isEdit'>
+                        <input class="util-slider" id="price" type="range" min="0" max="100" step="5"
+                               ng-model="u.percentage"
+                               style="width:70%;margin-right:10px;float:left;"/>
+                        <span>{{u.percentage}}%</span>
+                    </td>
+                    <td ng-if='!u.isEdit'>
+                        <input class="util-slider" id="price" type="range" min="0" max="100" step="5"
+                               ng-model="u.percentage"
+                               style="width:70%;margin-right:10px;float:left;" readonly/>
+                        <span>{{u.percentage}}%</span>
+                    </td>
+                    <td>
+                        <span class="ion-minus" ng-click="removeProject(u.ref, u.proj_id)"></span>
+                    </td>
+                    <td>
+                        <span class="ion-edit" ng-click="changeShow(u.ref, u.proj_id)"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+    <!-- Add Project -->
+    <div class="add-project" ng-if="tab == 'AddProject'" ng-controller="AddProjectController">
+        <form role="form" name="newProjectForm" class="form-horizontal" id="add-project-form" novalidate>
+            <div class="error">
+                {{errorMessage}}
+            </div>
+            <div class="form-group">
+                <label for="projectName" class="col-sm-3 control-label">Project Name <sup>*</sup> :</label>
+
+                <div class="col-sm-9">
+                    <input type="text" class="input-item" id="projectName" name="name" placeholder="Project Name"
+                           ng-model="new_project.name"
+                           ng-class="{ 'form-error' : newProjectForm.name.$invalid && !newProjectForm.name.$pristine }"
+                           ng-maxlength="200" maxlength="200" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="projectDescription" class="col-sm-3 control-label">Description :</label>
+
+                <div class="col-sm-9">
+                <textarea class="input-item" name="description" ng-model="new_project.description"
+                          id="projectDescription" rows="3" placeholder="Description"
+                          ng-maxlength="750" maxlength="750"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="addProjectStatus" class="col-sm-3 control-label">Status <sup>*</sup> :</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="input-item add-project-dropdown" id="addProjectStatus"
+                           name="addProjectStatus" placeholder="Select..."
+                           ng-model="new_project.status" ng-click="getProjectStatus()" required>
+                    <i class="icon ion-arrow-down-b placeholder-icon"></i>
+
+                    <!-- search result -->
+                    <div class="add-project-search-result select-status-result angular-animate" click-off>
+                        <ul class="container-fluid">
+                            <li ng-repeat="s in status"
+                                class="select-status-item" ng-click="selectProjectStatus($index)">
+                                <span class="jobrole-name">{{s.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="projectProcess" class="col-sm-3 control-label">Process <sup>*</sup> :</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="input-item add-project-dropdown" id="projectProcess"
+                           name="projectProcess"
+                           placeholder="Select..."
+                           ng-model="new_project.process" ng-click="getProjectProcess()" required>
+                    <i class="icon ion-arrow-down-b placeholder-icon"></i>
+
+                    <!-- search result -->
+                    <div class="add-project-search-result select-process-result angular-animate" click-off>
+                        <ul class="container-fluid">
+                            <li ng-repeat="p in process" ng-click="selectProjectProcess($index)">
+                                <span class="jobrole-name">{{p.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="projectGeo" class="col-sm-3 control-label">Geo <sup>*</sup> :</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="input-item add-project-dropdown" id="projectGeo" name="projectGeo"
+                           placeholder="Select..."
+                           ng-model="new_project.geo" ng-click="getProjectGeo()" required>
+                    <i class="icon ion-arrow-down-b placeholder-icon"></i>
+
+                    <!-- search result -->
+                    <div class="add-project-search-result select-geo-result angular-animate" click-off>
+                        <ul class="container-fluid">
+                            <li ng-repeat="g in geo" ng-click="selectProjectGeo($index)">
+                                <span class="jobrole-name">{{g.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ipt_record" class="col-sm-3 control-label">IPT Record :</label>
+
+                <div class="col-sm-9">
+                    <input type="text" class="input-item" id="ipt_record" name="ipt_record"
+                           placeholder="IPT Record (ex: IPT-00000****)"
+                           ng-model="new_project.IPT_record"
+                           ng-maxlength="200" maxlength="200">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="project_link" class="col-sm-3 control-label">Application URL :</label>
+
+                <div class="col-sm-9">
+                    <input type="text" class="input-item" id="project_link" name="project_link"
+                           placeholder="Application URL (ex: https://op-in.w3ibm.mybluemix.net/)"
+                           ng-model="new_project.project_link"
+                           ng-maxlength="200" maxlength="200">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="projectLead" class="col-sm-3 control-label">Technical Lead <sup>*</sup> :</label>
+
+                <div class="col-sm-9">
+                    <div class="item-input-group">
+                        <div class="item-input" click-off>
+                            <div class="selection-list selection-list-lead-new exist-lead-{{lead.uid}}"
+                                 ng-repeat="lead in leads" ng-class="{'slide-fade-up': lead.isRemove}">
+                                <span ng-if="!lead.name" class="person-name">{{(lead.fname | capitalize ) + " " + (lead.lname | capitalize)}}</span>
+                                <span ng-if="lead.name" class="person-name">{{lead.name}}</span>
+                                <span class="ion-close-round ion-icon" ng-click="removeLead($index)"></span>
+                            </div>
+                            <input id="techNewLead" class="project-search-person" type="text"
+                                   ng-if="leads.length > 0"
+                                   ng-model="leads.techLeadNew" ng-change="filterTechLead(leads.techLeadNew)">
+                            <input class="project-search-person" type="text" ng-if="leads.length == 0"
+                                   ng-model="leads.techLeadNew" placeholder="Technical Lead"
+                                   ng-change="filterTechLead(leads.techLeadNew)">
+                        </div>
+                        <!-- search tech lead result -->
+                        <div class="search-result proj-people-search-result" ng-if="filteredTechLead.length > 0">
+                            <ul class="search-result-users container-fluid text-left">
+                                <li ng-repeat="u in filteredTechLead" class="search-result-item"
+                                    ng-click="selectTechLead(u)">
+                                <span class="user-list"><img
+                                        ng-src="https://images.w3ibm.mybluemix.net/image/{{u.email}}?s=115">{{u.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="projectManager" class="col-sm-3 control-label">Project Manager :</label>
+
+                <div class="col-sm-9">
+                    <div class="item-input-group">
+                        <div class="item-input" click-off>
+                            <div class="selection-list selection-list-mgr-new exist-mgr-{{manager.uid}}"
+                                 ng-repeat="manager in managers" ng-class="{'slide-fade-up': manager.isRemove}">
+                                <span ng-if="!manager.name" class="person-name">{{(manager.fname | capitalize ) + " " + (manager.lname | capitalize)}}</span>
+                                <span ng-if="manager.name" class="person-name">{{manager.name}}</span>
+                                <span class="ion-close-round ion-icon" ng-click="removeProjMgr($index)"></span>
+                            </div>
+                            <input id="ProjNewMgr" class="project-search-person" type="text"
+                                   ng-if="managers.length > 0"
+                                   ng-model="managers.projMgrNew" ng-change="filterProjMgr(managers.projMgrNew)">
+                            <input class="project-search-person" type="text" ng-if="managers.length == 0"
+                                   ng-model="managers.projMgrNew" placeholder="Project Manager"
+                                   ng-change="filterProjMgr(managers.projMgrNew)">
+                        </div>
+                        <!-- search tech lead result -->
+                        <div class="search-result proj-people-search-result" ng-if="filteredProjManager.length > 0">
+                            <ul class="search-result-users container-fluid text-left">
+                                <li ng-repeat="u in filteredProjManager" class="search-result-item"
+                                    ng-click="selectProjManager(u)">
+                                <span class="user-list"><img
+                                        ng-src="https://images.w3ibm.mybluemix.net/image/{{u.email}}?s=115">{{u.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="projectAgreedDel" class="col-sm-3 control-label">Agreed Deliverable <sup>*</sup>
+                    :</label>
+
+                <div class="col-sm-3">
+                    <ngdatepicker date-format="yyyy-MM-dd" date-min-limit="{{currentDate}}">
+                        <input class="input-item add-project-dropdown" id="agreed-del" type="text" name="agreed"
+                               placeholder="yyyy-mm-dd"
+                               ng-model="agreed"
+                               ng-class="{ 'form-error' : newProjectForm.agreed.$invalid && !newProjectForm.agreed.$pristine }"
+                               required readonly/>
+                        <i class="icon ion-ios-calendar-outline placeholder-icon"></i>
+                    </ngdatepicker>
+                </div>
+                <label for="projectEstDel" class="col-sm-3 control-label" style="text-align:center;">Estimated
+                    Deliverable <sup>*</sup> :</label>
+
+                <div class="col-sm-3">
+                    <ngdatepicker date-format="yyyy-MM-dd" date-min-limit="{{currentDate}}">
+                        <input class="input-item add-project-dropdown" id="est-del" type="text" name="est"
+                               placeholder="yyyy-mm-dd"
+                               ng-model="est"
+                               ng-class="{ 'form-error' : newProjectForm.est.$invalid && !newProjectForm.est.$pristine }"
+                               required/>
+                        <i class="icon ion-ios-calendar-outline placeholder-icon"></i>
+                    </ngdatepicker>
+                </div>
+            </div>
+            <div class="button-group pull-right" style="margin-bottom: 15px;">
+                <button class="btn btn-save" type="button" ng-click="addProject()"
+                        ng-disabled="newProjectForm.$invalid || (leads.length === 0 || leads.length > 5)"
+                        style="border:1px solid #1BAC72;border-radius: 0;width: 100px;background-color: #1BAC72;color: #424952;">
+                    Create
+                </button>
+                <button class="btn btn-cancel" type="button" ng-click="$parent.cancel()"
+                        style="border:1px solid #1BAC72;border-radius: 0;width: 100px;background-color: #424952;color: #1BAC72;margin-left:5px;">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal-footer edit-modal-footer">
+    <div class="col-sm-6 util-add-confirm"
+         ng-class="{'util-add-confirm-true': utilConfirm, 'util-add-confirm-false': !utilConfirm}">
+        Utilization Added
+    </div>
+    <div class="button-group col-sm-6" ng-if="tab != 'AddProject'">
+        <button class="btn btn-save" type="button" ng-click="save()">Save</button>
+        <button class="btn btn-cancel" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

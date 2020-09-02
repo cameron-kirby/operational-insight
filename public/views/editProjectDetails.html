@@ -1,0 +1,192 @@
+<div class="modal-header">
+    <h3 class="modal-title">Edit Project Details</h3>
+    <span class="ion-close" ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+    <div class="add-project">
+        <form role="form" name="newProjectForm" class="form-horizontal" ng-if="loaded" id="add-project-form" novalidate>
+            <div class="error">
+                {{errorMessage}}
+            </div>
+            <div class="form-group">
+                <label for="projectName" class="col-sm-3 control-label">Project Name <sup>*</sup> :</label>
+
+                <div class="col-sm-9">
+                    <input type="text" class="input-item" id="projectName" name="name" placeholder="Project Name"
+                           ng-model="project.name"
+                           ng-class="{ 'form-error' : newProjectForm.name.$invalid && !newProjectForm.name.$pristine }"
+                           ng-maxlength="200" maxlength="200" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="projectDescription" class="col-sm-3 control-label">Description :</label>
+
+                <div class="col-sm-9">
+                    <textarea class="input-item" name="description" ng-model="project.description"
+                              id="projectDescription" rows="3" placeholder="Description"
+                              ng-maxlength="750" maxlength="750"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="addProjectStatus" class="col-sm-3 control-label">Status <sup>*</sup> :</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="input-item" id="addProjectStatus" name="addProjectStatus" placeholder="Select..."
+                           ng-model="project.status" ng-click="getProjectStatus()" required>
+                    <i class="icon ion-arrow-down-b placeholder-icon"></i>
+
+                    <!-- search result -->
+                    <div class="add-project-search-result select-status-result angular-animate"
+                            >
+                        <ul class="container-fluid">
+                            <li ng-repeat="s in status"
+                                class="select-status-item" ng-click="selectProjectStatus($index)">
+                                <span class="jobrole-name">{{s.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="projectProcess" class="col-sm-3 control-label">Process <sup>*</sup> :</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="input-item" id="projectProcess" name="projectProcess" placeholder="Select..."
+                           ng-model="project.process" ng-click="getProjectProcess()" required>
+                    <i class="icon ion-arrow-down-b placeholder-icon"></i>
+
+                    <!-- search result -->
+                    <div class="add-project-search-result select-process-result angular-animate" click-off>
+                        <ul class="container-fluid">
+                            <li ng-repeat="p in process" ng-click="selectProjectProcess($index)">
+                                <span class="jobrole-name">{{p.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="projectGeo" class="col-sm-3 control-label">Geo <sup>*</sup> :</label>
+
+                <div class="col-sm-6">
+                    <input type="text" class="input-item" id="projectGeo" name="projectGeo" placeholder="Select..."
+                           ng-model="project.geo" ng-click="getProjectGeo()" required>
+                    <i class="icon ion-arrow-down-b placeholder-icon"></i>
+
+                    <!-- search result -->
+                    <div class="add-project-search-result select-geo-result angular-animate" click-off>
+                        <ul class="container-fluid">
+                            <li ng-repeat="g in geo" ng-click="selectProjectGeo($index)">
+                                <span class="jobrole-name">{{g.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ipt_record" class="col-sm-3 control-label">IPT Record :</label>
+
+                <div class="col-sm-9">
+                    <input type="text" class="input-item" id="ipt_record" name="ipt_record" placeholder="IPT Record (ex: IPT-00000****)"
+                           ng-model="project.IPT_record"
+                           ng-maxlength="200" maxlength="200">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="project_link" class="col-sm-3 control-label">Application URL :</label>
+
+                <div class="col-sm-9">
+                    <input type="text" class="input-item" id="project_link" name="project_link" placeholder="Application URL (ex: https://op-in.w3ibm.mybluemix.net/)"
+                           ng-model="project.project_link"
+                           ng-maxlength="200" maxlength="200">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="projectLead" class="col-sm-3 control-label">Technical Lead <sup>*</sup> :</label>
+
+                <div class="col-sm-9">
+                    <div class="item-input-group">
+                        <div class="item-input" click-off>
+                            <div class="selection-list selection-list-lead-edit exist-lead-{{lead.uid}}" ng-repeat="lead in leads" ng-class="{'slide-fade-up': lead.isRemove}">
+                                <span ng-if="!lead.name" class="person-name">{{(lead.fname | capitalize ) + " " + (lead.lname | capitalize)}}</span>
+                                <span ng-if="lead.name" class="person-name">{{lead.name}}</span>
+                                <span class="ion-close-round ion-icon" ng-click="removeLead($index)"></span>
+                            </div>
+                            <input id="techNewLead" class="project-search-person" type="text" ng-if="leads.length > 0" ng-model="leads.techLeadNew" ng-change="filterTechLead(leads.techLeadNew)">
+                            <input class="project-search-person" type="text" ng-if="leads.length == 0 || !leads" ng-model="leads.techLeadNew" placeholder="Technical Lead" ng-change="filterTechLead(leads.techLeadNew)">
+                        </div>
+                        <!-- search tech lead result -->
+                        <div class="search-result proj-people-search-result" ng-if="filteredTechLead.length > 0">
+                            <ul class="search-result-users container-fluid text-left">
+                                <li ng-repeat="u in filteredTechLead" class="search-result-item"
+                                    ng-click="selectTechLead(u)">
+                                    <span class="user-list"><img
+                                            ng-src="https://images.w3ibm.mybluemix.net/image/{{u.email}}?s=115">{{u.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="projectManager" class="col-sm-3 control-label">Project Manager :</label>
+
+                <div class="col-sm-9">
+                    <div class="item-input-group">
+                        <div class="item-input" click-off>
+                            <div class="selection-list selection-list-mgr-edit exist-mgr-{{manager.uid}}" ng-repeat="manager in managers" ng-class="{'slide-fade-up': manager.isRemove}">
+                                <span ng-if="!manager.name" class="person-name">{{(manager.fname | capitalize ) + " " + (manager.lname | capitalize)}}</span>
+                                <span ng-if="manager.name" class="person-name">{{manager.name}}</span>
+                                <span class="ion-close-round ion-icon" ng-click="removeProjMgr($index)"></span>
+                            </div>
+                            <input id="ProjNewMgr" class="project-search-person" type="text" ng-if="managers.length > 0" ng-model="managers.projMgrNew" ng-change="filterProjMgr(managers.projMgrNew)">
+                            <input class="project-search-person" type="text" ng-if="managers.length == 0 || !managers" ng-model="managers.projMgrNew" placeholder="Project Manager" ng-change="filterProjMgr(managers.projMgrNew)">
+                        </div>
+                        <!-- search tech lead result -->
+                        <div class="search-result proj-people-search-result" ng-if="filteredProjManager.length > 0">
+                            <ul class="search-result-users container-fluid text-left">
+                                <li ng-repeat="u in filteredProjManager" class="search-result-item"
+                                    ng-click="selectProjManager(u)">
+                                    <span class="user-list"><img
+                                            ng-src="https://images.w3ibm.mybluemix.net/image/{{u.email}}?s=115">{{u.name}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="projectAgreedDel" class="col-sm-3 control-label">Agreed Deliverable <sup>*</sup> :</label>
+
+                <div class="col-sm-3">
+                    <ngdatepicker date-format="yyyy-MM-dd" date-min-limit="{{currentDate}}">
+                        <input class="input-item" id="agreed-del" type="text" name="agreed" placeholder="yyyy-mm-dd"
+                               ng-model="project.deliverable.agreed"
+                               ng-class="{ 'form-error' : newProjectForm.agreed.$invalid && !newProjectForm.agreed.$pristine }"
+                               required readonly/>
+                        <i class="icon ion-ios-calendar-outline placeholder-icon"></i>
+                    </ngdatepicker>
+                </div>
+                <label for="projectEstDel" class="col-sm-3 control-label" style="text-align:center;">Estimated
+                    Deliverable <sup>*</sup> :</label>
+
+                <div class="col-sm-3" style="margin-left: -15px; padding-right: 0px;">
+                    <ngdatepicker date-format="yyyy-MM-dd" date-min-limit="{{currentDate}}">
+                        <input class="input-item" id="est-del" type="text" name="est" placeholder="yyyy-mm-dd"
+                               ng-model="project.deliverable.estimate"
+                               ng-class="{ 'form-error' : newProjectForm.est.$invalid && !newProjectForm.est.$pristine }"
+                               required/>
+                        <i class="icon ion-ios-calendar-outline placeholder-icon" style="right: 0px;"></i>
+                    </ngdatepicker>
+                </div>
+            </div>
+            <div class="button-group pull-right" style="margin-bottom: 15px;">
+                <div class="button-group">
+                    <button class="btn btn-save" type="button" ng-click="updateProject()" style="border:1px solid #1BAC72;border-radius: 0;width: 100px;background-color: #1BAC72;color: #424952;" ng-disabled="newProjectForm.$invalid || (leads.length === 0 || leads.length > 5)">Save</button>
+                    <button class="btn btn-cancel" type="button" ng-click="cancel()" style="border:1px solid #1BAC72;border-radius: 0;width: 100px;background-color: #1BAC72;color: #424952;">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div></div>
+<div class="modal-footer">
+</div>

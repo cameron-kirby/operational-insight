@@ -1,0 +1,88 @@
+<div class="container-fluid skill-detail-container">
+    <div style="overflow-x: visible;">
+        <!--upper part-->
+        <div class="row" style="min-height: 150px;">
+            <div class="col col-md-4 skill-name">
+                <span class="people-count" ng-class="peopleWithSkill.length < 10 ? 'one-digit' : 'two-digit'">{{peopleWithSkill.length}}</span>
+                <span>{{skill.name}}</span>
+            </div>
+            <div class="col col-md-4 skill-overview">
+                <span>DESCRIPTION</span>
+
+                <p>
+                    {{skill.description}}
+                </p>
+            </div>
+            <div class="col col-md-4 related-skills">
+                <div>RELATED SKILLS</div>
+                <span class="related-skill-list" ng-repeat="skill in skill.relatedSkills"
+                      ng-click="navToSkill(skill.skill_id)">
+                    <!--Todo: click related skill to navigate to that bubble-->
+                    {{skill.name}}
+                </span>
+            </div>
+
+        </div>
+
+        <!--people table-->
+        <div class="row">
+            <table class="table">
+                <caption>People</caption>
+                <thead>
+                <th colspan="2" ng-click="sortType = 'fname'; sortReverse = !sortReverse">
+                    NAME
+                    <span ng-show="sortType == 'fname' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                    <span ng-show="sortType == 'fname' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                </th>
+                <th ng-click="sortType = 'email'; sortReverse = !sortReverse">
+                    EMAIL
+                    <span ng-show="sortType == 'email' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                    <span ng-show="sortType == 'email' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                </th>
+                <th ng-click="sortType = 'job_title'; sortReverse = !sortReverse">
+                    JOB TITLE
+                    <span ng-show="sortType == 'job_title' && sortReverse" class="ion-android-arrow-dropdown"></span>
+                    <span ng-show="sortType == 'job_title' && !sortReverse" class="ion-android-arrow-dropup"></span>
+                </th>
+                <th ng-click="sortType = 'cc'; sortReverse = !sortReverse">
+                    GEO
+                    <span ng-show="sortType == 'cc' && sortReverse"
+                          class="ion-android-arrow-dropdown"></span>
+                    <span ng-show="sortType == 'cc' && !sortReverse"
+                          class="ion-android-arrow-dropup"></span>
+                </th>
+                <th ng-click="sortType = 'skills.proficiency[0].rating'; sortReverse = !sortReverse">
+                    PROFICIENCY
+                    <span ng-show="sortType == 'skills.proficiency[0].rating' && sortReverse"
+                          class="ion-android-arrow-dropdown"></span>
+                    <span ng-show="sortType == 'skills.proficiency[0].rating' && !sortReverse"
+                          class="ion-android-arrow-dropup"></span>
+                </th>
+                </thead>
+                <tbody>
+                <!--table content-->
+                <tr class="skill-list" ng-repeat="person in peopleWithSkill | orderBy:sortType:sortReverse"
+                    ui-sref="home.people.profile({userID: person._id})">
+                    <td>
+                        <div class="profile-image"
+                             ng-style="{'background-image': 'url(https://images.w3ibm.mybluemix.net/image/' + person._id + '.jpg?s=115)'}"></div>
+                    </td>
+                    <td>{{(person.fname | capitalize) + " " + (person.lname | capitalize)}}</td>
+                    <td>{{person.email}}</td>
+                    <td>{{person.job_title}}</td>
+                    <td>
+                        <span style="width: 32px; height: 32px" class="flag-icon"
+                              ng-class="'flag-icon-' + person.cc"></span>
+                    </td>
+                    <td>
+                        <span class="rating">
+                            <opin-custom-rating ng-model="person.skills.proficiency[0].rating"
+                                                readonly="true"></opin-custom-rating>
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

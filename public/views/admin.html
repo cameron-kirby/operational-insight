@@ -1,0 +1,37 @@
+<head>
+    <style>
+        caption{
+            color : white;
+            font-size: 2em;
+        }
+        th, td{
+            padding: 40px;
+            color: white;
+            text-align:center;
+            vertical-align:middle;
+        }
+    </style>
+</head>
+<div class="container-fluid angular-animate animate-show-hide" ng-show="true">
+<div class="row">
+    <table class="table" align="center">
+        <caption>Skills</caption>
+        <!-- table heading-->
+        <tr>
+            <th><span>Skill Name</span></th>
+            <th><span>Category</span></th>
+            <th><span>Edit</span></th>
+        </tr>
+        <!--table content-->
+        <tr ng-repeat="skill in skills">
+            <td>{{skill.name}}</td>
+            <td>{{skill.category}}</td>
+            <td>
+                <button class="btn" ng-click="editUser(user.id)">
+                <span class="glyphicon glyphicon-pencil"></span>  Edit
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>

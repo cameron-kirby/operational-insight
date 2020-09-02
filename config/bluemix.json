@@ -1,0 +1,19 @@
+{
+  "blueMail" : {
+    "username": "",
+    "password": "",
+    "emailUrl": ""
+  },
+  "ldapSettings": {
+    "scheme": "ldaps",
+    "port": 636
+  },
+  "domain": {
+    "base_url": "",
+    "url": "",
+    "localhost": false
+  },
+  "ipt": {
+    "url": "https://cfweb.rochny.ibm.com/ptd/projmain?ptdpage=detail&applid="
+  }
+}
