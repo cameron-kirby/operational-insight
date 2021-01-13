@@ -132,7 +132,7 @@ class UtilizationRepository {
       skip: parseInt(offset, 10),
       fields: ['_id', 'user_id', 'fname', 'lname', 'job_title', 'projects', 'reports_to'],
       sort: [{
-        'fname:string': 'asc',
+        'fname': 'asc',
       }],
       bookmark: frontBookmark,
     };

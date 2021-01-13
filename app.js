@@ -43,7 +43,9 @@ const app = serverInitializer.initialize();
 // Check if logs folder exist. If not, create it
 fs.exists('./logs', (exists) => {
   if (!exists) {
-    fs.mkdir('./logs');
+    fs.mkdir('./logs', (err) => {
+      return console.error(err);
+    });
   }
 });
 

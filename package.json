@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "postinstall": "node_modules/bower/bin/bower install",
-    "test": "mocha ./serverTest/**/*.js --debug-brk"
+    "test": "mocha ./serverTest/**/*.js --inspect-brk"
   },
   "dependencies": {
     "async": "~1.2.1",

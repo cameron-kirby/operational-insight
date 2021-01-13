@@ -105,7 +105,7 @@
 
 
     /**
-     * Parases the login response.
+     * Parses the login response.
      *
      * @param {JSONObject} loginResponse
      *    The successful response from the login call.

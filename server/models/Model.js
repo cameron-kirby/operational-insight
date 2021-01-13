@@ -229,10 +229,10 @@ Opin.queryDocuments = (dbname, query) => {
         error.errorJSON = err;
         logger.log('error', error.errorString.concat('---', JSON.stringify(err)));
         deferred.reject(error);
-    } else {
-        deferred.resolve(docs);
-    }
-});
+        } else {
+            deferred.resolve(docs);
+        }
+    });
 return deferred.promise;
 };
 
@@ -262,27 +262,27 @@ Opin.queryView = (dbname, viewname, parameters, flag) => {
     if (parameters && _.isObject(parameters)) {
         _.each(properties, (property) => {
             if (_.has(parameters, property)) {
-            defaults[property] = parameters[property];
+                defaults[property] = parameters[property];
+            }
+        });
+    }
+
+    // Create deferred object.
+    const deferred = q.defer();
+    conn.db.use(dbname)
+    .view('documents', viewname, defaults, (err, data) => {
+        if (err) {
+            const error = {};
+            error.errorString = 'Error in queryView method';
+            error.errorJSON = err;
+            logger.log('error', error.errorString.concat('---', JSON.stringify(err)));
+            deferred.reject(error);
+        } else {
+            deferred.resolve(data);
         }
     });
-}
-
-// Create deferred object.
-const deferred = q.defer();
-conn.db.use(dbname)
-  .view('documents', viewname, defaults, (err, data) => {
-    if (err) {
-    const error = {};
-    error.errorString = 'Error in queryView method';
-    error.errorJSON = err;
-    logger.log('error', error.errorString.concat('---', JSON.stringify(err)));
-    deferred.reject(error);
-} else {
-    deferred.resolve(data);
-}
-});
-// Return promise.
-return deferred.promise;
+    // Return promise.
+    return deferred.promise;
 };
 
 /**

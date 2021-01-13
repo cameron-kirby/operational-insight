@@ -55,9 +55,9 @@ function findDetails(teamMember, designation) {
 projectService.addProject = (req) => {
   const deferred = q.defer();
   const resObj = {};
-  const token = req.headers['x-access-token'];
+  // !!! const token = req.headers['x-access-token'];
 	// get the user who invoked the api
-  const decoded = jwt.decode(token, require('../../config/secret.js')());
+  // !!! const decoded = jwt.decode(token, require('../../config/secret.js')());
   // series of validations to check if the required attributes are present in the request body
   if (_.isEmpty(req.body.name)) {
     resObj.status_code = 400;
@@ -115,39 +115,42 @@ projectService.addProject = (req) => {
     }
   }
   // to make sure there are no duplicate entries
-  const technicalLeadsTemp = _.uniq(req.body.technical_leads, JSON.stringify);
-  const projectManagersTemp = _.uniq(req.body.project_managers, JSON.stringify);
+  // ! Overriding bluepage lookup
+  // const technicalLeadsTemp = _.uniq(req.body.technical_leads, JSON.stringify);
+  // const projectManagersTemp = _.uniq(req.body.project_managers, JSON.stringify);
 
-  const technicalLeads = [];
-  const projectManagers = [];
+  // ! Overriding bluepage lookup
+  // const technicalLeads = [];
+  // const projectManagers = [];
 
-  // create an array of promises and call the findDetails function
-  // to get the details of project managers and technical leads
+  // // create an array of promises and call the findDetails function
+  // // to get the details of project managers and technical leads
   const promises = [];
 
-  if (!_.isEmpty(technicalLeadsTemp) && (technicalLeadsTemp.length > 0)) {
-    for (let tlIndex = 0; tlIndex < technicalLeadsTemp.length; tlIndex++) {
-      // TL indicates Technical Lead
-      promises.push(findDetails(technicalLeadsTemp[tlIndex].id, 'TL'));
-    }
-  }
+  // if (!_.isEmpty(technicalLeadsTemp) && (technicalLeadsTemp.length > 0)) {
+  //   for (let tlIndex = 0; tlIndex < technicalLeadsTemp.length; tlIndex++) {
+  //     // TL indicates Technical Lead
+  //     promises.push(findDetails(technicalLeadsTemp[tlIndex].id, 'TL'));
+  //   }
+  // }
 
-  if (!_.isEmpty(projectManagersTemp) && (projectManagersTemp.length > 0)) {
-    for (let pmIndex = 0; pmIndex < projectManagersTemp.length; pmIndex++) {
-      // PM indicates Project Manager
-      promises.push(findDetails(projectManagersTemp[pmIndex].id, 'PM'));
-    }
-  }
+  // if (!_.isEmpty(projectManagersTemp) && (projectManagersTemp.length > 0)) {
+  //   for (let pmIndex = 0; pmIndex < projectManagersTemp.length; pmIndex++) {
+  //     // PM indicates Project Manager
+  //     promises.push(findDetails(projectManagersTemp[pmIndex].id, 'PM'));
+  //   }
+  // }
 
   q.all(promises).then((data) => {
     // get the resolved data and push details of project managers and technical leads
-    for (let j = 0; j < data.length; j++) {
-      if (data[j].job_role === 'Project Manager') {
-        projectManagers.push(data[j]);
-      } else if (data[j].job_role === 'Technical Lead') {
-        technicalLeads.push(data[j]);
-      }
-    }
+    // ! Overriding bluepage lookup
+    // for (let j = 0; j < data.length; j++) {
+    //   if (data[j].job_role === 'Project Manager') {
+    //     projectManagers.push(data[j]);
+    //   } else if (data[j].job_role === 'Technical Lead') {
+    //     technicalLeads.push(data[j]);
+    //   }
+    // }
     // construct the project object to save in the database
     const project = {
       name: req.body.name,
@@ -159,14 +162,15 @@ projectService.addProject = (req) => {
       status: req.body.status,
       process: req.body.process,
       geo: req.body.geo,
-      technical_leads: technicalLeads,
-      project_managers: projectManagers,
+      technical_leads: req.body.technical_leads,
+      project_managers: req.body.project_managers,
       deliverable: {
         estimate: parseInt(req.body.deliverable.estimate, 10),
         agreed: parseInt(req.body.deliverable.agreed, 10),
       },
       team: [],
-      created_by: decoded.iss, // project created by
+      // !!! Override token created_by: decoded.iss, // project created by
+      created_by: req.body.created_by, // project created by
       created_date: new Date().getTime(), // project created date
     };
     // insert the project document in the projects database.
@@ -1227,7 +1231,7 @@ projectService.getProjects = (req) => {
             });
           }
           const project = {};
-          // If the project is  found in the utilizations database,
+          // If the project is found in the utilizations database,
           // we build the project object and push it to items array
           if (projUtil) {
             project.proj_id = projects[projectIndex].id;

@@ -81,7 +81,8 @@ class ServerInitializer {
     // Only the requests that start with /api/v1/* will be checked for the token.
     // Any URL's that do not follow the below pattern should be avoided unless you
     // are sure that authentication is not needed
-    app.all('/rest/v1/*', authenticate);
+    // app.all('/rest/v1/*', authenticate);
+    app.all('/rest/v1/*');
 
     // routes ==================================================
 

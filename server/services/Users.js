@@ -198,7 +198,7 @@ userServices.findAllUser = function (params, callback) {
           },
           sort: [
             {
-              'fname:string': 'asc'
+              'fname': 'asc'
             }
           ],
           bookmark: front_book,
@@ -220,7 +220,7 @@ userServices.findAllUser = function (params, callback) {
           },
           sort: [
             {
-              'fname:string': 'asc'
+              'fname': 'asc'
             }
           ],
           bookmark: front_book,

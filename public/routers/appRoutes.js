@@ -57,7 +57,7 @@ angular.module('appRoutes', ['ui.router'])
                 templateUrl: 'views/main.html',
                 controller: 'MainController',
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.projects', {
@@ -69,7 +69,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.projectlist', {
@@ -86,7 +86,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.projects.detail', {
@@ -98,7 +98,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.projects.projectDetail', {
@@ -110,7 +110,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.projects.projectDetail.edit', {
@@ -121,7 +121,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
 
             })
@@ -133,7 +133,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
 
             })
@@ -148,7 +148,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.skillsList', {
@@ -162,7 +162,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.skills.detail', {
@@ -174,7 +174,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.skills.skillDetail', {
@@ -186,7 +186,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.people', {
@@ -203,7 +203,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.peoplelist', {
@@ -215,7 +215,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.people.profile', {
@@ -233,7 +233,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 },
                 params: {
                   action: {
@@ -250,13 +250,13 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.people.profile.edit.tab', {
                 url: '/{edit}',
                 access: {
-                    requiredLogin: true
+                    requiredLogin: false
                 }
             })
             .state('home.settings', {
@@ -269,7 +269,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true,
+                    requiredLogin: false,
                     requiredAdmin: true
                 }
             })
@@ -281,7 +281,7 @@ angular.module('appRoutes', ['ui.router'])
                     }
                 },
                 access: {
-                    requiredLogin: true,
+                    requiredLogin: false,
                     requiredAdmin: true
                 }
             });
@@ -306,7 +306,8 @@ ResrcUtilApp.run(function ($rootScope, $state, AuthenticationFactory, $cookies, 
         }
 
         // now, redirect only not authenticated
-        if ((toState.access && toState.access.requiredLogin) && !AuthenticationFactory.isLogged) {
+        //if ((toState.access && toState.access.requiredLogin) && !AuthenticationFactory.isLogged) {
+        if ((toState.access && toState.access.requiredLogin)){
             e.preventDefault(); // stop current execution
             $rootScope.storedState = toState;
             if (toParams) {
