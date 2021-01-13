@@ -23,7 +23,7 @@ const config = require('config');
 logger.log('info', `NODE_ENV: ${config.util.getEnv('NODE_ENV')}`);
 
 // set our port
-const listeningPort = process.env.VCAP_APP_PORT || config.get('listening_port.localhost');
+const listeningPort = process.env.PORT || config.get('listening_port.localhost');
 
 // Preparing the scheduler.
 const emailService = new EmailService();
