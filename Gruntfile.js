@@ -198,7 +198,6 @@ module.exports = function gruntTasks(grunt) {
           'clean',
           'less',
           'autoprefixer',
-          'eslint',
           'cssmin',
           'concat_css',
           'imagemin',
